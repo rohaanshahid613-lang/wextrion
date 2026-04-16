@@ -290,7 +290,6 @@ Date: ${date}`,
 function ComplianceContent() {
   const searchParams = useSearchParams()
   const initialType = searchParams.get('type') || 'andon'
-  
   const [appealType, setAppealType] = useState(initialType)
   const [productName, setProductName] = useState('')
   const [asin, setAsin] = useState('')
@@ -401,7 +400,7 @@ function ComplianceContent() {
 
   return (
     <div style={{ minHeight: '100vh', background: '#0b0c10', display: 'flex', flexDirection: 'column' }}>
-      
+
       {/* Navbar */}
       <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 24px', borderBottom: '1px solid rgba(255,255,255,0.06)', zIndex: 10 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -428,11 +427,10 @@ function ComplianceContent() {
       </nav>
 
       <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
-        
+
         {/* LEFT SIDEBAR */}
         {sidebarOpen && (
           <div style={{ width: '260px', minWidth: '260px', background: '#0f1117', borderRight: '1px solid rgba(255,255,255,0.06)', display: 'flex', flexDirection: 'column', height: 'calc(100vh - 53px)', overflowY: 'auto' }}>
-            
             <div style={{ padding: '12px' }}>
               <button onClick={startNew}
                 style={{ width: '100%', padding: '10px', background: 'linear-gradient(135deg, #5e9ef4, #7c5ef4)', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 700, fontSize: '13px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
@@ -480,29 +478,29 @@ function ComplianceContent() {
         )}
 
         {/* MAIN CONTENT */}
-        <div style={{ flex: 1, display: 'grid', gridTemplateColumns: result ? '1fr 1fr' : '1fr', overflow: 'auto', padding: '24px' }}>
-          
+        <div style={{ flex: 1, display: 'grid', gridTemplateColumns: result ? '1fr 1fr' : '1fr', overflow: 'auto', padding: '32px 40px' }}>
+
           {/* FORM */}
-          <div style={{ paddingRight: result ? '20px' : '0', maxWidth: result ? '100%' : '680px', margin: result ? '0' : '0 auto', width: '100%' }}>
-            <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: '22px', fontWeight: 800, color: '#e8eaf2', marginBottom: '4px' }}>📋 Appeal Generator</h1>
-            <p style={{ color: '#7c8099', fontSize: '13px', marginBottom: '20px' }}>Fill in the details to generate your professional appeal</p>
+          <div style={{ paddingRight: result ? '20px' : '0', maxWidth: result ? '100%' : '900px', margin: result ? '0' : '0 auto', width: '100%' }}>
+            <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: '26px', fontWeight: 800, color: '#e8eaf2', marginBottom: '4px' }}>📋 Appeal Generator</h1>
+            <p style={{ color: '#7c8099', fontSize: '14px', marginBottom: '24px' }}>Fill in the details to generate your professional appeal</p>
 
-            <div style={{ background: 'rgba(19,21,28,0.8)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '16px', padding: '20px' }}>
+            <div style={{ background: 'rgba(19,21,28,0.8)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '16px', padding: '28px' }}>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '14px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: '12px', color: '#7c8099', marginBottom: '5px' }}>Appeal Type</label>
+                  <label style={{ display: 'block', fontSize: '13px', color: '#7c8099', marginBottom: '6px' }}>Appeal Type</label>
                   <select value={appealType} onChange={e => setAppealType(e.target.value)}
-                    style={{ width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '7px', padding: '9px 12px', color: '#e8eaf2', fontSize: '13px', outline: 'none' }}>
+                    style={{ width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '11px 14px', color: '#e8eaf2', fontSize: '14px', outline: 'none' }}>
                     {Object.entries(appealTypes).map(([key, value]) => (
                       <option key={key} value={key} style={{ background: '#13151c' }}>{value as string}</option>
                     ))}
                   </select>
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: '12px', color: '#7c8099', marginBottom: '5px' }}>Marketplace</label>
+                  <label style={{ display: 'block', fontSize: '13px', color: '#7c8099', marginBottom: '6px' }}>Marketplace</label>
                   <select value={marketplace} onChange={e => setMarketplace(e.target.value)}
-                    style={{ width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '7px', padding: '9px 12px', color: '#e8eaf2', fontSize: '13px', outline: 'none' }}>
+                    style={{ width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '11px 14px', color: '#e8eaf2', fontSize: '14px', outline: 'none' }}>
                     {['US','UK','CA','DE','FR','IT','ES'].map(m => (
                       <option key={m} value={m} style={{ background: '#13151c' }}>Amazon {m}</option>
                     ))}
@@ -510,33 +508,33 @@ function ComplianceContent() {
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '14px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
                 <div>
-                  <label style={{ display: 'block', fontSize: '12px', color: '#7c8099', marginBottom: '5px' }}>Product Name</label>
+                  <label style={{ display: 'block', fontSize: '13px', color: '#7c8099', marginBottom: '6px' }}>Product Name</label>
                   <input value={productName} onChange={e => setProductName(e.target.value)}
                     placeholder="e.g. LifePro Vibration Plate"
-                    style={{ width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '7px', padding: '9px 12px', color: '#e8eaf2', fontSize: '13px', outline: 'none' }} />
+                    style={{ width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '11px 14px', color: '#e8eaf2', fontSize: '14px', outline: 'none' }} />
                 </div>
                 <div>
-                  <label style={{ display: 'block', fontSize: '12px', color: '#7c8099', marginBottom: '5px' }}>ASIN</label>
+                  <label style={{ display: 'block', fontSize: '13px', color: '#7c8099', marginBottom: '6px' }}>ASIN</label>
                   <input value={asin} onChange={e => setAsin(e.target.value)}
                     placeholder="e.g. B09Y9G5QPS"
-                    style={{ width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '7px', padding: '9px 12px', color: '#e8eaf2', fontSize: '13px', outline: 'none' }} />
+                    style={{ width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '11px 14px', color: '#e8eaf2', fontSize: '14px', outline: 'none' }} />
                 </div>
               </div>
 
-              <div style={{ marginBottom: '14px' }}>
-                <label style={{ display: 'block', fontSize: '12px', color: '#7c8099', marginBottom: '5px' }}>Issue Details *</label>
+              <div style={{ marginBottom: '16px' }}>
+                <label style={{ display: 'block', fontSize: '13px', color: '#7c8099', marginBottom: '6px' }}>Issue Details *</label>
                 <textarea value={details} onChange={e => setDetails(e.target.value)}
                   placeholder="Describe the issue in detail. What did Amazon say? What happened? The more detail you provide, the better your appeal will be..."
-                  rows={5}
-                  style={{ width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '7px', padding: '9px 12px', color: '#e8eaf2', fontSize: '13px', outline: 'none', resize: 'vertical', fontFamily: 'inherit' }} />
+                  rows={7}
+                  style={{ width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '11px 14px', color: '#e8eaf2', fontSize: '14px', outline: 'none', resize: 'vertical', fontFamily: 'inherit' }} />
               </div>
 
-              <div style={{ marginBottom: '14px' }}>
-                <label style={{ display: 'block', fontSize: '12px', color: '#7c8099', marginBottom: '5px' }}>Supporting Documents (Optional)</label>
+              <div style={{ marginBottom: '16px' }}>
+                <label style={{ display: 'block', fontSize: '13px', color: '#7c8099', marginBottom: '6px' }}>Supporting Documents (Optional)</label>
                 <div onClick={() => document.getElementById('fileInput')?.click()}
-                  style={{ width: '100%', background: 'rgba(255,255,255,0.03)', border: '2px dashed rgba(255,255,255,0.08)', borderRadius: '7px', padding: '14px', textAlign: 'center', cursor: 'pointer', color: '#7c8099', fontSize: '12px' }}>
+                  style={{ width: '100%', background: 'rgba(255,255,255,0.03)', border: '2px dashed rgba(255,255,255,0.08)', borderRadius: '8px', padding: '16px', textAlign: 'center', cursor: 'pointer', color: '#7c8099', fontSize: '13px' }}>
                   📎 Click to attach invoices, test reports or images
                   <input id="fileInput" type="file" multiple accept=".pdf,.jpg,.jpeg,.png,.docx,.doc"
                     style={{ display: 'none' }}
@@ -545,10 +543,10 @@ function ComplianceContent() {
                 {files.length > 0 && (
                   <div style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
                     {files.map((file, i) => (
-                      <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'rgba(94,158,244,0.08)', border: '1px solid rgba(94,158,244,0.15)', borderRadius: '5px', padding: '6px 10px' }}>
-                        <span style={{ fontSize: '11px', color: '#5e9ef4' }}>📄 {file.name}</span>
+                      <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'rgba(94,158,244,0.08)', border: '1px solid rgba(94,158,244,0.15)', borderRadius: '6px', padding: '7px 12px' }}>
+                        <span style={{ fontSize: '12px', color: '#5e9ef4' }}>📄 {file.name}</span>
                         <button onClick={() => setFiles(prev => prev.filter((_, idx) => idx !== i))}
-                          style={{ background: 'transparent', border: 'none', color: '#f45e5e', cursor: 'pointer', fontSize: '12px' }}>✕</button>
+                          style={{ background: 'transparent', border: 'none', color: '#f45e5e', cursor: 'pointer', fontSize: '13px' }}>✕</button>
                       </div>
                     ))}
                   </div>
@@ -556,17 +554,17 @@ function ComplianceContent() {
               </div>
 
               {!user && (
-                <div style={{ marginBottom: '8px', textAlign: 'center' }}>
+                <div style={{ marginBottom: '10px', textAlign: 'center' }}>
                   {freeUses < FREE_LIMIT ? (
-                    <p style={{ fontSize: '11px', color: '#4ef4b0' }}>✓ {FREE_LIMIT - freeUses} free appeals remaining — no signup needed</p>
+                    <p style={{ fontSize: '12px', color: '#4ef4b0' }}>✓ {FREE_LIMIT - freeUses} free appeals remaining — no signup needed</p>
                   ) : (
-                    <p style={{ fontSize: '11px', color: '#f4c45e' }}>⚡ Free limit reached — sign up free to continue</p>
+                    <p style={{ fontSize: '12px', color: '#f4c45e' }}>⚡ Free limit reached — sign up free to continue</p>
                   )}
                 </div>
               )}
 
               <button onClick={generateAppeal} disabled={!details.trim()}
-                style={{ width: '100%', padding: '12px', background: details.trim() ? 'linear-gradient(135deg, #5e9ef4, #7c5ef4)' : 'rgba(255,255,255,0.05)', color: details.trim() ? 'white' : '#7c8099', border: 'none', borderRadius: '8px', fontWeight: 700, fontSize: '14px', cursor: details.trim() ? 'pointer' : 'not-allowed' }}>
+                style={{ width: '100%', padding: '14px', background: details.trim() ? 'linear-gradient(135deg, #5e9ef4, #7c5ef4)' : 'rgba(255,255,255,0.05)', color: details.trim() ? 'white' : '#7c8099', border: 'none', borderRadius: '10px', fontWeight: 700, fontSize: '15px', cursor: details.trim() ? 'pointer' : 'not-allowed' }}>
                 {!user && freeUses >= FREE_LIMIT ? 'Sign Up to Continue →' : 'Generate Professional Appeal →'}
               </button>
             </div>
@@ -575,21 +573,21 @@ function ComplianceContent() {
           {/* RESULT */}
           {result && (
             <div style={{ paddingLeft: '20px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: '18px', fontWeight: 700, color: '#e8eaf2' }}>Generated Appeal</h2>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+                <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: '20px', fontWeight: 700, color: '#e8eaf2' }}>Generated Appeal</h2>
                 <div style={{ display: 'flex', gap: '8px' }}>
                   <button onClick={copyToClipboard}
-                    style={{ padding: '7px 14px', background: copied ? 'rgba(78,244,176,0.1)' : 'rgba(255,255,255,0.05)', border: `1px solid ${copied ? 'rgba(78,244,176,0.3)' : 'rgba(255,255,255,0.1)'}`, borderRadius: '7px', color: copied ? '#4ef4b0' : '#7c8099', cursor: 'pointer', fontSize: '12px' }}>
+                    style={{ padding: '8px 16px', background: copied ? 'rgba(78,244,176,0.1)' : 'rgba(255,255,255,0.05)', border: `1px solid ${copied ? 'rgba(78,244,176,0.3)' : 'rgba(255,255,255,0.1)'}`, borderRadius: '7px', color: copied ? '#4ef4b0' : '#7c8099', cursor: 'pointer', fontSize: '13px' }}>
                     {copied ? '✓ Copied!' : 'Copy'}
                   </button>
                   <button onClick={downloadText}
-                    style={{ padding: '7px 14px', background: 'rgba(94,158,244,0.1)', border: '1px solid rgba(94,158,244,0.2)', borderRadius: '7px', color: '#5e9ef4', cursor: 'pointer', fontSize: '12px' }}>
+                    style={{ padding: '8px 16px', background: 'rgba(94,158,244,0.1)', border: '1px solid rgba(94,158,244,0.2)', borderRadius: '7px', color: '#5e9ef4', cursor: 'pointer', fontSize: '13px' }}>
                     Download
                   </button>
                 </div>
               </div>
-              <div style={{ background: 'rgba(19,21,28,0.8)', border: '1px solid rgba(244,196,94,0.15)', borderRadius: '12px', padding: '20px', height: 'calc(100vh - 180px)', overflowY: 'auto' }}>
-                <pre style={{ color: '#c5c9d8', fontSize: '12.5px', lineHeight: 1.8, whiteSpace: 'pre-wrap', fontFamily: 'inherit' }}>{result}</pre>
+              <div style={{ background: 'rgba(19,21,28,0.8)', border: '1px solid rgba(244,196,94,0.15)', borderRadius: '14px', padding: '24px', height: 'calc(100vh - 200px)', overflowY: 'auto' }}>
+                <pre style={{ color: '#c5c9d8', fontSize: '13px', lineHeight: 1.8, whiteSpace: 'pre-wrap', fontFamily: 'inherit' }}>{result}</pre>
               </div>
             </div>
           )}
