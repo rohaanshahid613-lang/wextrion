@@ -25,7 +25,7 @@ export default function Home() {
           Amazon Sellers · All Marketplaces · Always Free
         </div>
         <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: '58px', fontWeight: 800, lineHeight: 1.1, marginBottom: '20px', background: 'linear-gradient(135deg, #e8eaf2 0%, #5e9ef4 55%, #7c5ef4 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-          Get Your Amazon<br />Account Reinstated.
+          Get Your Amazon<br />Issues Resolved.
         </h1>
         <p style={{ fontSize: '18px', color: '#7c8099', maxWidth: '520px', margin: '0 auto 40px', fontWeight: 300, lineHeight: 1.6, fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
           Generate professional Plans of Action, appeal letters and compliance documents for every Amazon violation — instantly. No signup required.
@@ -82,7 +82,7 @@ export default function Home() {
 
       <div style={{ position: 'relative', zIndex: 5, background: 'rgba(19,21,28,0.5)', borderTop: '1px solid rgba(255,255,255,0.06)', padding: '60px 40px', textAlign: 'center' }}>
         <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: '32px', fontWeight: 800, color: '#e8eaf2', marginBottom: '12px' }}>
-          Ready to get reinstated?
+          Ready to get your issues resolved?
         </h2>
         <p style={{ color: '#7c8099', fontSize: '16px', marginBottom: '28px', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>Generate your first appeal in under 2 minutes. No signup required.</p>
         <Link href="/tools/compliance" style={{ display: 'inline-block', padding: '14px 48px', background: 'linear-gradient(135deg, #5e9ef4, #7c5ef4)', color: 'white', textDecoration: 'none', borderRadius: '10px', fontWeight: 700, fontSize: '16px' }}>
