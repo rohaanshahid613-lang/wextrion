@@ -347,6 +347,12 @@ function ComplianceContent() {
     }
   }
 
+  const deleteAppeal = async (id: string) => {
+    await supabase.from('appeals').delete().eq('id', id)
+    setHistory(prev => prev.filter(h => h.id !== id))
+    if (activeId === id) { setResult(''); setActiveId(null) }
+  }
+
   const generateAppeal = () => {
     if (!details.trim()) return
     if (!user && freeUses >= FREE_LIMIT) {
@@ -456,19 +462,24 @@ function ComplianceContent() {
                   <p style={{ fontSize: '11px', color: '#404357', padding: '8px 4px', textTransform: 'uppercase', letterSpacing: '0.08em' }}>History</p>
                   {history.map((item) => (
                     <div key={item.id}
-                      onClick={() => loadAppeal(item)}
-                      style={{ padding: '10px 12px', borderRadius: '8px', cursor: 'pointer', marginBottom: '4px', background: activeId === item.id ? 'rgba(94,158,244,0.1)' : 'transparent', border: activeId === item.id ? '1px solid rgba(94,158,244,0.2)' : '1px solid transparent', transition: 'all 0.15s' }}
-                      onMouseEnter={e => { if (activeId !== item.id) e.currentTarget.style.background = 'rgba(255,255,255,0.04)' }}
-                      onMouseLeave={e => { if (activeId !== item.id) e.currentTarget.style.background = 'transparent' }}>
-                      <div style={{ fontSize: '12px', fontWeight: 600, color: activeId === item.id ? '#5e9ef4' : '#e8eaf2', marginBottom: '3px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                        {item.product_name}
+                      style={{ padding: '10px 12px', borderRadius: '8px', cursor: 'pointer', marginBottom: '4px', background: activeId === item.id ? 'rgba(94,158,244,0.1)' : 'transparent', border: activeId === item.id ? '1px solid rgba(94,158,244,0.2)' : '1px solid transparent', transition: 'all 0.15s', position: 'relative', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '8px' }}>
+                      <div onClick={() => loadAppeal(item)} style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ fontSize: '12px', fontWeight: 600, color: activeId === item.id ? '#5e9ef4' : '#e8eaf2', marginBottom: '3px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                          {item.product_name}
+                        </div>
+                        <div style={{ fontSize: '11px', color: '#7c8099', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                          {item.appeal_type}
+                        </div>
+                        <div style={{ fontSize: '10px', color: '#404357', marginTop: '2px' }}>
+                          {formatDate(item.created_at)}
+                        </div>
                       </div>
-                      <div style={{ fontSize: '11px', color: '#7c8099', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                        {item.appeal_type}
-                      </div>
-                      <div style={{ fontSize: '10px', color: '#404357', marginTop: '2px' }}>
-                        {formatDate(item.created_at)}
-                      </div>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); deleteAppeal(item.id) }}
+                        title="Delete appeal"
+                        style={{ background: 'rgba(244,94,94,0.08)', border: '1px solid rgba(244,94,94,0.15)', borderRadius: '4px', color: '#f45e5e', cursor: 'pointer', fontSize: '11px', padding: '3px 7px', flexShrink: 0, marginTop: '2px' }}>
+                        ✕
+                      </button>
                     </div>
                   ))}
                 </>
