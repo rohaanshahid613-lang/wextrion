@@ -27,7 +27,7 @@ export default function Signup() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/dashboard`
+        redirectTo: 'https://wextrion.vercel.app/dashboard'
       }
     })
     if (error) setError(error.message)
@@ -48,7 +48,7 @@ export default function Signup() {
         <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: '36px', fontWeight: 800, color: '#e8eaf2', lineHeight: 1.2, marginBottom: '16px' }}>
           Join Thousands of<br />Amazon Sellers.
         </h2>
-        <p style={{ color: '#7c8099', fontSize: '15px', lineHeight: 1.7, marginBottom: '40px', maxWidth: '360px' }}>
+        <p style={{ color: '#7c8099', fontSize: '15px', lineHeight: 1.7, marginBottom: '40px', maxWidth: '360px', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
           Create your free account and get unlimited access to all three powerful Amazon tools.
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -70,7 +70,7 @@ export default function Signup() {
         <div style={{ width: '100%', maxWidth: '400px' }}>
           <div style={{ textAlign: 'center', marginBottom: '32px' }}>
             <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: '28px', fontWeight: 800, color: '#e8eaf2', marginBottom: '8px' }}>Create account</h1>
-            <p style={{ color: '#7c8099', fontSize: '14px' }}>Join Wextrion for free today</p>
+            <p style={{ color: '#7c8099', fontSize: '14px', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>Join Wextrion for free today</p>
           </div>
 
           {/* Google Button */}
@@ -88,7 +88,7 @@ export default function Signup() {
           {/* Divider */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
             <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.08)' }} />
-            <span style={{ fontSize: '12px', color: '#404357' }}>or sign up with email</span>
+            <span style={{ fontSize: '12px', color: '#404357', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>or sign up with email</span>
             <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.08)' }} />
           </div>
 
@@ -112,13 +112,13 @@ export default function Signup() {
             </button>
           </form>
 
-          <p style={{ textAlign: 'center', marginTop: '24px', fontSize: '14px', color: '#7c8099' }}>
+          <p style={{ textAlign: 'center', marginTop: '24px', fontSize: '14px', color: '#7c8099', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
             Already have an account?{' '}
             <Link href="/auth/login" style={{ color: '#5e9ef4', textDecoration: 'none', fontWeight: 600 }}>Sign in</Link>
           </p>
 
           <div style={{ marginTop: '24px', padding: '14px 16px', background: 'rgba(78,244,176,0.06)', border: '1px solid rgba(78,244,176,0.15)', borderRadius: '8px', textAlign: 'center' }}>
-            <p style={{ fontSize: '12px', color: '#4ef4b0', margin: 0 }}>✓ No credit card required · Always free</p>
+            <p style={{ fontSize: '12px', color: '#4ef4b0', margin: 0, fontFamily: 'Plus Jakarta Sans, sans-serif' }}>✓ No credit card required · Always free</p>
           </div>
         </div>
       </div>
