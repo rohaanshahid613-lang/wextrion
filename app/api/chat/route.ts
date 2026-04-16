@@ -6,7 +6,7 @@ export async function POST(req: Request) {
     const lastMessage = messages[messages.length - 1].content
 
     const response = await fetch(
-      'https://api-inference.huggingface.co/models/microsoft/DialoGPT-large',
+      'https://api-inference.huggingface.co/models/facebook/blenderbot-400M-distill',
       {
         method: 'POST',
         headers: {
@@ -14,25 +14,24 @@ export async function POST(req: Request) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          inputs: {
-            text: lastMessage
-          },
+          inputs: lastMessage,
           wait_for_model: true
         }),
       }
     )
 
     const text = await response.text()
-    console.log('Response:', text.substring(0, 200))
+    console.log('Raw response:', text.substring(0, 300))
     
     try {
       const data = JSON.parse(text)
       const reply = data?.generated_text || 
-                    data?.[0]?.generated_text || 
-                    'No response received'
+                    data?.[0]?.generated_text ||
+                    data?.conversation?.generated_responses?.[0] ||
+                    JSON.stringify(data)
       return NextResponse.json({ reply })
     } catch {
-      return NextResponse.json({ reply: 'Please try again.' })
+      return NextResponse.json({ reply: text.substring(0, 200) })
     }
 
   } catch (error: any) {
