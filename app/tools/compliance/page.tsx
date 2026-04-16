@@ -350,14 +350,14 @@ function ComplianceContent() {
       <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 32px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <div style={{ width: '28px', height: '28px', background: 'linear-gradient(135deg, #5e9ef4, #7c5ef4)', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px' }}>⚡</div>
-          <span style={{ fontFamily: 'Syne, sans-serif', fontSize: '18px', fontWeight: 800, color: '#e8eaf2' }}>Wextrion</span>
+          <span style={{ fontFamily: 'Playfair Display, serif', fontSize: '18px', fontWeight: 800, color: '#e8eaf2' }}>Wextrion</span>
         </div>
         <Link href="/dashboard" style={{ fontSize: '13px', color: '#7c8099', textDecoration: 'none' }}>← Back to Dashboard</Link>
       </nav>
 
       <div style={{ flex: 1, display: 'grid', gridTemplateColumns: result ? '1fr 1fr' : '1fr', gap: '0', maxWidth: '1200px', width: '100%', margin: '0 auto', padding: '24px 20px' }}>
         <div style={{ paddingRight: result ? '20px' : '0' }}>
-          <h1 style={{ fontFamily: 'Syne, sans-serif', fontSize: '24px', fontWeight: 800, color: '#e8eaf2', marginBottom: '4px' }}>📋 Appeal Generator</h1>
+          <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: '24px', fontWeight: 800, color: '#e8eaf2', marginBottom: '4px' }}>📋 Appeal Generator</h1>
           <p style={{ color: '#7c8099', fontSize: '14px', marginBottom: '24px' }}>Fill in the details below to generate your appeal</p>
 
           <div style={{ background: 'rgba(19,21,28,0.8)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '16px', padding: '24px' }}>
@@ -457,7 +457,7 @@ function ComplianceContent() {
         {result && (
           <div style={{ paddingLeft: '20px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-              <h2 style={{ fontFamily: 'Syne, sans-serif', fontSize: '18px', fontWeight: 700, color: '#e8eaf2' }}>Generated Appeal</h2>
+              <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: '18px', fontWeight: 700, color: '#e8eaf2' }}>Generated Appeal</h2>
               <div style={{ display: 'flex', gap: '8px' }}>
                 <button onClick={copyToClipboard}
                   style={{ padding: '8px 16px', background: copied ? 'rgba(78,244,176,0.1)' : 'rgba(255,255,255,0.05)', border: `1px solid ${copied ? 'rgba(78,244,176,0.3)' : 'rgba(255,255,255,0.1)'}`, borderRadius: '8px', color: copied ? '#4ef4b0' : '#7c8099', cursor: 'pointer', fontSize: '13px' }}>

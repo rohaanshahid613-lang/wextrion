@@ -26,7 +26,7 @@ export default function Signup() {
       <div style={{ background: 'rgba(19,21,28,0.9)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '20px', padding: '48px', width: '100%', maxWidth: '420px' }}>
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
           <div style={{ width: '48px', height: '48px', background: 'linear-gradient(135deg, #5e9ef4, #7c5ef4)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px', margin: '0 auto 16px' }}>⚡</div>
-          <h1 style={{ fontFamily: 'Syne, sans-serif', fontSize: '28px', fontWeight: 800, color: '#e8eaf2', marginBottom: '8px' }}>Create account</h1>
+          <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: '28px', fontWeight: 800, color: '#e8eaf2', marginBottom: '8px' }}>Create account</h1>
           <p style={{ color: '#7c8099', fontSize: '14px' }}>Join Wextrion for free today</p>
         </div>
         <form onSubmit={handleSignup}>

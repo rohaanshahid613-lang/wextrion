@@ -31,7 +31,7 @@ export default function Dashboard() {
       <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 40px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <div style={{ width: '32px', height: '32px', background: 'linear-gradient(135deg, #5e9ef4, #7c5ef4)', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px' }}>⚡</div>
-          <span style={{ fontFamily: 'Syne, sans-serif', fontSize: '20px', fontWeight: 800, color: '#e8eaf2' }}>Wextrion</span>
+          <span style={{ fontFamily: 'Playfair Display, serif', fontSize: '20px', fontWeight: 800, color: '#e8eaf2' }}>Wextrion</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <span style={{ fontSize: '13px', color: '#7c8099' }}>{user?.email}</span>
@@ -43,7 +43,7 @@ export default function Dashboard() {
 
       <div style={{ padding: '48px 40px', maxWidth: '1100px', margin: '0 auto' }}>
         <div style={{ marginBottom: '40px' }}>
-          <h1 style={{ fontFamily: 'Syne, sans-serif', fontSize: '32px', fontWeight: 800, color: '#e8eaf2', marginBottom: '8px' }}>
+          <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: '32px', fontWeight: 800, color: '#e8eaf2', marginBottom: '8px' }}>
             Appeal Generator 📋
           </h1>
           <p style={{ color: '#7c8099', fontSize: '15px' }}>Select the type of appeal you need to generate</p>
@@ -57,7 +57,7 @@ export default function Dashboard() {
                 onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)')}>
                 <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: `linear-gradient(90deg, ${appeal.color}, transparent)` }} />
                 <div style={{ fontSize: '28px', marginBottom: '12px' }}>{appeal.icon}</div>
-                <div style={{ fontFamily: 'Syne, sans-serif', fontSize: '16px', fontWeight: 700, color: '#e8eaf2', marginBottom: '6px' }}>{appeal.name}</div>
+                <div style={{ fontFamily: 'Playfair Display, serif', fontSize: '16px', fontWeight: 700, color: '#e8eaf2', marginBottom: '6px' }}>{appeal.name}</div>
                 <div style={{ fontSize: '12px', color: '#7c8099', lineHeight: 1.5, marginBottom: '16px' }}>{appeal.desc}</div>
                 <div style={{ fontSize: '12px', fontWeight: 600, color: appeal.color }}>Generate Appeal →</div>
               </div>
