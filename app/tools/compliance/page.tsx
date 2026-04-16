@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
@@ -48,16 +48,14 @@ PREVENTIVE MEASURES:
 5. Documentation Review: We have reviewed and updated all product safety documentation and compliance certificates.
 6. Training: Our team has received additional training on Amazon's safety standards and policies.
 
-EVIDENCE OF COMPLIANCE:
+SUPPORTING EVIDENCE ATTACHED:
 - Product safety test reports from accredited laboratory
 - Updated product documentation and compliance certificates
 - Supplier audit report
 - Quality control checklists
 - Customer communication records
 
-We sincerely apologize for any inconvenience caused and are fully committed to maintaining the highest safety standards. We respectfully request the reinstatement of our listing and assure Amazon and our customers that we have taken all necessary steps to prevent any recurrence.
-
-We remain committed to providing safe, high-quality products and maintaining full compliance with all Amazon policies and applicable regulations.
+We sincerely apologize for any inconvenience caused and are fully committed to maintaining the highest safety standards. We respectfully request the reinstatement of our listing.
 
 Sincerely,
 [Your Name]
@@ -66,7 +64,7 @@ Date: ${date}`,
 
     suspension: `Dear Amazon Seller Performance Team,
 
-We are writing in response to the suspension notice received for our selling account. We fully understand the gravity of this situation and have conducted an immediate and thorough investigation into the root causes.
+We are writing in response to the suspension notice received for our selling account. We fully understand the gravity of this situation and have conducted an immediate and thorough investigation.
 
 ACCOUNT DETAILS:
 Product: ${productName}
@@ -77,8 +75,6 @@ ISSUE DETAILS:
 ${details}
 
 ROOT CAUSE ANALYSIS:
-After careful review, we have identified the following root causes that led to this situation:
-
 1. We acknowledge that our performance metrics fell below Amazon's required standards.
 2. Upon investigation, we identified specific operational weaknesses that contributed to this decline.
 3. We have traced the timeline of events and identified the exact points where our processes failed.
@@ -100,16 +96,7 @@ PREVENTIVE MEASURES FOR THE FUTURE:
 6. Policy Compliance: Regular internal audits to ensure ongoing compliance with all Amazon policies.
 7. Staff Training: Quarterly training sessions on Amazon policies and performance standards.
 
-SUPPORTING DOCUMENTATION:
-- Updated Standard Operating Procedures
-- Performance improvement plan
-- Customer service training records
-- Quality control documentation
-- Inventory management procedures
-
-We are fully committed to meeting and exceeding Amazon's performance standards. We have already implemented the above changes and are seeing positive results. We respectfully request the reinstatement of our selling privileges and commit to maintaining full compliance going forward.
-
-We value our partnership with Amazon and our customers, and we are dedicated to providing an exceptional buying experience.
+We are fully committed to meeting and exceeding Amazon's performance standards. We respectfully request the reinstatement of our selling privileges.
 
 Sincerely,
 [Your Name]
@@ -118,44 +105,29 @@ Date: ${date}`,
 
     listing: `Dear Amazon Catalog Team,
 
-We are writing to request the reinstatement of our product listing for "${productName}" (ASIN: ${asin}) on Amazon ${marketplace}. We have thoroughly reviewed the reasons for the listing removal and have taken comprehensive corrective actions.
-
-LISTING DETAILS:
-Product Name: ${productName}
-ASIN: ${asin}
-Marketplace: Amazon ${marketplace}
+We are writing to request the reinstatement of our product listing for "${productName}" (ASIN: ${asin}) on Amazon ${marketplace}.
 
 ISSUE DETAILS:
 ${details}
 
 ROOT CAUSE ANALYSIS:
-1. We have carefully reviewed Amazon's listing policies and identified the specific areas where our listing did not fully comply.
+1. We have carefully reviewed Amazon's listing policies and identified the specific areas of non-compliance.
 2. We understand the exact nature of the violation and have taken immediate steps to correct it.
-3. We have reviewed our listing creation process to identify how this non-compliance occurred.
+3. We have reviewed our listing creation process to identify how this occurred.
 
 CORRECTIVE ACTIONS TAKEN:
-1. We have completely reviewed and updated our product listing to ensure full compliance with Amazon's policies.
-2. All product images have been reviewed and updated to meet Amazon's image requirements.
-3. Product title, bullet points, and description have been rewritten to comply with Amazon's content guidelines.
+1. We have completely reviewed and updated our product listing to ensure full compliance.
+2. All product images have been reviewed and updated to meet Amazon's requirements.
+3. Product title, bullet points, and description have been rewritten to comply with guidelines.
 4. We have removed any prohibited claims or content from our listing.
 5. We have verified that all product information is accurate and truthful.
-6. We have obtained all necessary compliance documentation for our product.
-
-LISTING IMPROVEMENTS MADE:
-1. Title: Updated to comply with Amazon's title requirements
-2. Images: All images now meet Amazon's technical and content requirements
-3. Bullet Points: Revised to remove any non-compliant claims
-4. Description: Updated to ensure accuracy and policy compliance
-5. Keywords: Reviewed and updated backend keywords
-6. Compliance Documentation: All required certificates and documentation obtained
 
 PREVENTIVE MEASURES:
 1. Pre-listing Review: All new listings will undergo thorough compliance review before going live.
 2. Policy Training: Our listing team has completed updated training on Amazon's content policies.
 3. Regular Audits: Monthly review of all active listings to ensure ongoing compliance.
-4. Documentation Management: Improved system for managing product compliance documentation.
 
-We are confident that our listing now fully complies with all Amazon policies and guidelines. We respectfully request the reinstatement of ASIN ${asin} and commit to maintaining full compliance going forward.
+We respectfully request the reinstatement of ASIN ${asin}.
 
 Sincerely,
 [Your Name]
@@ -164,43 +136,34 @@ Date: ${date}`,
 
     ip: `Dear Amazon Seller Performance Team,
 
-We are writing in response to the intellectual property complaint received regarding our product "${productName}" (ASIN: ${asin}) on Amazon ${marketplace}. We take IP compliance extremely seriously and have conducted a thorough investigation.
+We are writing in response to the intellectual property complaint received regarding "${productName}" (ASIN: ${asin}) on Amazon ${marketplace}.
 
 COMPLAINT DETAILS:
 ${details}
 
-ROOT CAUSE ANALYSIS:
-1. We have carefully reviewed the IP complaint and investigated our supply chain thoroughly.
-2. We have verified the authenticity of our products and sourcing documentation.
-3. We have reviewed our supplier relationships and authorization documentation.
-
-EVIDENCE OF AUTHENTICITY / NON-INFRINGEMENT:
+EVIDENCE OF AUTHENTICITY:
 1. We are an authorized reseller/manufacturer of this product.
 2. We have obtained all necessary authorization from the rights holder.
 3. Our products are genuine and sourced directly from authorized distributors.
 4. We have invoices and authorization letters from our supplier.
 
 CORRECTIVE ACTIONS TAKEN:
-1. We have immediately removed the listing pending investigation.
-2. We have contacted our supplier to verify product authenticity.
-3. We have gathered all relevant invoices and authorization documentation.
-4. We have reviewed all our other listings for potential IP issues.
-5. We have contacted the complainant to resolve the matter directly.
+1. We have immediately reviewed our supply chain and sourcing documentation.
+2. We have gathered all relevant invoices and authorization documentation.
+3. We have reviewed all our other listings for potential IP issues.
+4. We have contacted the complainant to resolve the matter directly.
 
 PREVENTIVE MEASURES:
 1. Supplier Verification: Enhanced due diligence process for all new suppliers.
 2. Authorization Documentation: Maintaining complete records of all brand authorizations.
 3. Regular IP Audits: Quarterly review of all listings for potential IP issues.
-4. Legal Review: All new products reviewed for potential IP concerns before listing.
-5. Training: Staff trained on IP laws and Amazon's IP policies.
 
-SUPPORTING DOCUMENTS AVAILABLE:
+SUPPORTING DOCUMENTS ATTACHED:
 - Purchase invoices from authorized supplier
 - Authorization letter from brand/manufacturer
 - Import documents showing product authenticity
-- Communication with rights holder
 
-We respectfully request the reinstatement of our listing and are happy to provide any additional documentation required to resolve this matter.
+We respectfully request the reinstatement of our listing.
 
 Sincerely,
 [Your Name]
@@ -209,15 +172,10 @@ Date: ${date}`,
 
     fda: `Dear Amazon Regulatory Compliance Team,
 
-We are writing in response to the regulatory compliance notice received for our product "${productName}" (ASIN: ${asin}) on Amazon ${marketplace}. We fully understand Amazon's commitment to regulatory compliance and have taken immediate corrective action.
+We are writing in response to the regulatory compliance notice for "${productName}" (ASIN: ${asin}) on Amazon ${marketplace}.
 
 ISSUE DETAILS:
 ${details}
-
-ROOT CAUSE ANALYSIS:
-1. We have reviewed our product listing and identified the specific claims or content that triggered this notice.
-2. We acknowledge that certain language in our listing may have implied medical or health claims beyond what is permitted.
-3. We have reviewed FDA guidelines and Amazon's restricted products policies in detail.
 
 IMMEDIATE CORRECTIVE ACTIONS:
 1. We have immediately updated our product listing to remove all non-compliant health claims.
@@ -235,18 +193,10 @@ LISTING CHANGES MADE:
 
 PREVENTIVE MEASURES:
 1. Compliance Review Process: All listings reviewed by compliance specialist before going live.
-2. Claim Substantiation: All health-related claims must be substantiated with scientific evidence.
-3. Regular Audits: Quarterly review of all health and wellness product listings.
-4. Training: Marketing team trained on FDA regulations and Amazon's health claims policies.
-5. Legal Review: Products in health category reviewed by legal counsel before listing.
+2. Regular Audits: Quarterly review of all health and wellness product listings.
+3. Training: Marketing team trained on FDA regulations and Amazon's health claims policies.
 
-REGULATORY COMPLIANCE DOCUMENTATION:
-- FDA registration/exemption documentation (if applicable)
-- Third-party testing results
-- Ingredient/component safety documentation
-- Compliance review checklist
-
-We are committed to full regulatory compliance and respectfully request the reinstatement of our listing.
+We are committed to full regulatory compliance and respectfully request reinstatement.
 
 Sincerely,
 [Your Name]
@@ -255,18 +205,15 @@ Date: ${date}`,
 
     return: `Dear Amazon Seller Performance Team,
 
-We are writing to address our High Return Rate for product "${productName}" (ASIN: ${asin}) on Amazon ${marketplace} and to present our comprehensive plan to reduce returns to acceptable levels.
+We are writing to address our High Return Rate for "${productName}" (ASIN: ${asin}) on Amazon ${marketplace}.
 
 ISSUE DETAILS:
 ${details}
 
 ROOT CAUSE ANALYSIS:
-After analyzing all returns and customer feedback, we have identified the following primary causes:
-
 1. Product Description Accuracy: Some customers had expectations that didn't match the product.
 2. Product Quality: A small number of units had quality issues that we have now addressed.
-3. Sizing/Compatibility: Some customers experienced fit or compatibility issues.
-4. Packaging: A few items arrived damaged due to inadequate packaging.
+3. Packaging: A few items arrived damaged due to inadequate packaging.
 
 IMMEDIATE CORRECTIVE ACTIONS:
 1. We have reviewed all return reasons and customer feedback in detail.
@@ -274,29 +221,14 @@ IMMEDIATE CORRECTIVE ACTIONS:
 3. We have improved our product quality control processes.
 4. We have enhanced our packaging to prevent damage during shipping.
 5. We have added detailed size charts and compatibility information.
-6. We have improved our product images to better represent the actual product.
-
-LISTING IMPROVEMENTS:
-1. More accurate and detailed product description
-2. Additional product images showing all angles and details
-3. Detailed size guide and compatibility information
-4. Updated FAQ section addressing common customer concerns
-5. Video content showing product in use
-
-QUALITY IMPROVEMENTS:
-1. Enhanced pre-shipment quality inspection process
-2. Updated packaging with better protection
-3. Improved product instructions and documentation
-4. Direct communication with manufacturer for quality improvements
 
 PREVENTIVE MEASURES:
 1. Return Analysis: Monthly analysis of all return reasons to identify trends.
 2. Listing Accuracy: Regular review of listings to ensure accuracy.
-3. Customer Communication: Proactive communication to set correct expectations.
-4. Quality Control: 100% inspection of products before shipment.
-5. Packaging Standards: Updated packaging standards to prevent damage.
+3. Quality Control: 100% inspection of products before shipment.
+4. Packaging Standards: Updated packaging standards to prevent damage.
 
-We are confident these measures will significantly reduce our return rate. We respectfully request the continuation of our selling privileges.
+We are confident these measures will significantly reduce our return rate.
 
 Sincerely,
 [Your Name]
@@ -305,7 +237,7 @@ Date: ${date}`,
 
     shipment: `Dear Amazon Seller Performance Team,
 
-We are writing to address our Late Shipment Rate for our account and specifically for product "${productName}" (ASIN: ${asin}) on Amazon ${marketplace}.
+We are writing to address our Late Shipment Rate for "${productName}" (ASIN: ${asin}) on Amazon ${marketplace}.
 
 ISSUE DETAILS:
 ${details}
@@ -313,31 +245,21 @@ ${details}
 ROOT CAUSE ANALYSIS:
 1. We experienced unexpected fulfillment challenges that impacted our shipping performance.
 2. We identified specific operational bottlenecks in our order processing workflow.
-3. We reviewed all late shipments and identified the common causes.
 
 IMMEDIATE CORRECTIVE ACTIONS:
-1. We have reviewed all processes from order receipt to shipment confirmation.
-2. We have implemented same-day order processing for all orders received before 2 PM.
-3. We have added additional fulfillment staff during peak hours.
-4. We have set up automated alerts for orders approaching the ship-by deadline.
-5. We have updated our carrier pickup schedule to ensure daily collection.
-6. We have implemented a backup carrier option for urgent shipments.
-
-PROCESS IMPROVEMENTS:
-1. Order Management: New system to prioritize and track all orders in real-time.
-2. Staffing: Additional fulfillment staff added to handle order volume.
-3. Carrier Relations: Established relationship with multiple carriers for reliability.
-4. Cut-off Times: Clearly defined order cut-off times to manage customer expectations.
-5. Inventory: Improved inventory management to prevent stockouts causing delays.
+1. We have implemented same-day order processing for all orders received before 2 PM.
+2. We have added additional fulfillment staff during peak hours.
+3. We have set up automated alerts for orders approaching the ship-by deadline.
+4. We have updated our carrier pickup schedule to ensure daily collection.
+5. We have implemented a backup carrier option for urgent shipments.
 
 PREVENTIVE MEASURES:
 1. Daily monitoring of all pending orders and ship-by dates.
 2. Automated alerts when orders are at risk of being late.
 3. Weekly review of shipping performance metrics.
 4. Contingency plans for high-volume periods.
-5. Regular carrier performance reviews.
 
-We are committed to maintaining our shipping performance above Amazon's standards and respectfully request the continuation of our selling privileges.
+We are committed to maintaining our shipping performance above Amazon's standards.
 
 Sincerely,
 [Your Name]
@@ -346,38 +268,27 @@ Date: ${date}`,
 
     feedback: `Dear Amazon Seller Support Team,
 
-We are writing to request the removal of negative feedback left for our account regarding product "${productName}" (ASIN: ${asin}) on Amazon ${marketplace}.
+We are writing to request the removal of negative feedback for "${productName}" (ASIN: ${asin}) on Amazon ${marketplace}.
 
 FEEDBACK DETAILS:
 ${details}
 
 GROUNDS FOR REMOVAL:
-We respectfully request this feedback be reviewed and removed for the following reasons:
-
 1. The feedback contains content that violates Amazon's feedback policies.
-2. The issue described was related to Amazon's fulfillment service (FBA), not our product or service.
+2. The issue described was related to Amazon's fulfillment service (FBA), not our product.
 3. The customer's concern has been fully resolved to their satisfaction.
-4. The feedback contains false or misleading information.
 
-ACTIONS TAKEN TO RESOLVE CUSTOMER CONCERN:
+ACTIONS TAKEN:
 1. We immediately contacted the customer upon receiving the feedback.
 2. We offered a full refund or replacement at no cost to the customer.
-3. We investigated the issue thoroughly and found it to be an isolated incident.
-4. We have resolved the underlying issue to prevent recurrence.
-5. The customer has confirmed their satisfaction with our resolution.
-
-EVIDENCE OF RESOLUTION:
-- Customer communication history showing our prompt response
-- Refund/replacement confirmation
-- Customer's acknowledgment of satisfactory resolution
+3. The customer has confirmed their satisfaction with our resolution.
 
 PREVENTIVE MEASURES:
 1. Enhanced quality control to prevent similar issues.
 2. Improved customer communication processes.
 3. Faster response times to customer concerns.
-4. Regular review of customer feedback to identify improvement opportunities.
 
-We value all customer feedback and are committed to providing exceptional service. We respectfully request the removal of this feedback as it does not accurately reflect our level of service and violates Amazon's feedback guidelines.
+We respectfully request the removal of this feedback as it violates Amazon's feedback guidelines.
 
 Sincerely,
 [Your Name]
@@ -399,6 +310,7 @@ function ComplianceContent() {
   const [details, setDetails] = useState('')
   const [result, setResult] = useState('')
   const [copied, setCopied] = useState(false)
+  const [files, setFiles] = useState<File[]>([])
 
   const generateAppeal = () => {
     if (!details.trim()) return
@@ -479,12 +391,48 @@ function ComplianceContent() {
                 style={{ width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '10px 14px', color: '#e8eaf2', fontSize: '14px', outline: 'none' }} />
             </div>
 
-            <div style={{ marginBottom: '24px' }}>
+            <div style={{ marginBottom: '16px' }}>
               <label style={{ display: 'block', fontSize: '13px', color: '#7c8099', marginBottom: '6px' }}>Issue Details *</label>
               <textarea value={details} onChange={e => setDetails(e.target.value)}
                 placeholder="Describe the issue in detail. What did Amazon say? What happened? The more detail you provide, the better your appeal will be..."
                 rows={6}
                 style={{ width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '10px 14px', color: '#e8eaf2', fontSize: '14px', outline: 'none', resize: 'vertical', fontFamily: 'inherit' }} />
+            </div>
+
+            <div style={{ marginBottom: '16px' }}>
+              <label style={{ display: 'block', fontSize: '13px', color: '#7c8099', marginBottom: '6px' }}>Supporting Documents (Optional)</label>
+              <div
+                onClick={() => document.getElementById('fileInput')?.click()}
+                style={{ width: '100%', background: 'rgba(255,255,255,0.03)', border: '2px dashed rgba(255,255,255,0.1)', borderRadius: '8px', padding: '20px', textAlign: 'center', cursor: 'pointer', color: '#7c8099', fontSize: '13px' }}>
+                <div style={{ fontSize: '24px', marginBottom: '8px' }}>📎</div>
+                <div>Click to attach invoices, test reports, images or any supporting docs</div>
+                <div style={{ fontSize: '11px', marginTop: '4px', color: '#404357' }}>PDF, JPG, PNG, DOCX accepted</div>
+                <input
+                  id="fileInput"
+                  type="file"
+                  multiple
+                  accept=".pdf,.jpg,.jpeg,.png,.docx,.doc"
+                  style={{ display: 'none' }}
+                  onChange={e => {
+                    const newFiles = Array.from(e.target.files || [])
+                    setFiles(prev => [...prev, ...newFiles])
+                  }}
+                />
+              </div>
+              {files.length > 0 && (
+                <div style={{ marginTop: '10px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  {files.map((file, i) => (
+                    <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'rgba(94,158,244,0.08)', border: '1px solid rgba(94,158,244,0.15)', borderRadius: '6px', padding: '8px 12px' }}>
+                      <span style={{ fontSize: '12px', color: '#5e9ef4' }}>📄 {file.name}</span>
+                      <button
+                        onClick={() => setFiles(prev => prev.filter((_, idx) => idx !== i))}
+                        style={{ background: 'transparent', border: 'none', color: '#f45e5e', cursor: 'pointer', fontSize: '14px' }}>
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             <button onClick={generateAppeal} disabled={!details.trim()}
