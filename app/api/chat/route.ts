@@ -6,7 +6,7 @@ export async function POST(req: Request) {
     const lastMessage = messages[messages.length - 1].content
 
     const response = await fetch(
-      'https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.3',
+      'https://api-inference.huggingface.co/models/HuggingFaceH4/zephyr-7b-beta',
       {
         method: 'POST',
         headers: {
@@ -14,23 +14,29 @@ export async function POST(req: Request) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          inputs: `<s>[INST] ${lastMessage} [/INST]`,
+          inputs: `<|system|>You are Wextrion AI, a helpful assistant.</s><|user|>${lastMessage}</s><|assistant|>`,
           parameters: {
-            max_new_tokens: 1024,
+            max_new_tokens: 512,
             temperature: 0.7,
-            return_full_text: false
+            return_full_text: false,
+            stop: ['</s>', '<|user|>']
           }
         }),
       }
     )
 
-    const data = await response.json()
+    const text = await response.text()
     
-    const reply = Array.isArray(data) 
-      ? data[0]?.generated_text || 'No response'
-      : data?.error || 'No response'
+    try {
+      const data = JSON.parse(text)
+      const reply = Array.isArray(data) 
+        ? data[0]?.generated_text?.trim() || 'No response'
+        : data?.error || 'No response'
+      return NextResponse.json({ reply })
+    } catch {
+      return NextResponse.json({ reply: 'Model is loading, please try again in 30 seconds.' })
+    }
 
-    return NextResponse.json({ reply })
   } catch (error: any) {
     return NextResponse.json({ reply: `Error: ${error.message}` })
   }
