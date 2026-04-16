@@ -27,7 +27,7 @@ export default function Login() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: 'https://wextrion.vercel.app/dashboard'
+        redirectTo: 'https://wextrion.vercel.app/auth/callback'
       }
     })
     if (error) setError(error.message)
@@ -76,7 +76,6 @@ export default function Login() {
             <p style={{ color: '#7c8099', fontSize: '14px', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>Sign in to your Wextrion account</p>
           </div>
 
-          {/* Google Button */}
           <button onClick={handleGoogleLogin} disabled={googleLoading}
             style={{ width: '100%', padding: '13px', background: 'white', color: '#1a1a1a', border: 'none', borderRadius: '8px', fontWeight: 600, fontSize: '15px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', marginBottom: '20px' }}>
             <svg width="20" height="20" viewBox="0 0 24 24">
@@ -88,7 +87,6 @@ export default function Login() {
             {googleLoading ? 'Signing in...' : 'Continue with Google'}
           </button>
 
-          {/* Divider */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
             <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.08)' }} />
             <span style={{ fontSize: '12px', color: '#404357', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>or sign in with email</span>
