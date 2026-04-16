@@ -3,20 +3,27 @@ import { NextResponse } from 'next/server'
 export async function POST(req: Request) {
   try {
     const { messages } = await req.json()
-    const lastMessage = messages[messages.length - 1].content
     
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${process.env.GEMINI_API_KEY}`
+    const conversationHistory = messages.map((msg: any) => ({
+      role: msg.role === 'assistant' ? 'model' : 'user',
+      parts: [{ text: msg.content }]
+    }))
+
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-8b:generateContent?key=${process.env.GEMINI_API_KEY}`
     
     const response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        contents: [{ parts: [{ text: lastMessage }] }]
+        contents: conversationHistory,
+        generationConfig: {
+          maxOutputTokens: 2048,
+          temperature: 0.7
+        }
       })
     })
     
     const data = await response.json()
-    console.log('Gemini response:', JSON.stringify(data))
     
     if (data.error) {
       return NextResponse.json({ reply: `Error: ${data.error.message}` })
@@ -26,7 +33,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ reply })
     
   } catch (error: any) {
-    console.log('Catch error:', error.message)
     return NextResponse.json({ reply: `Error: ${error.message}` })
   }
 }
