@@ -27,7 +27,7 @@ export default function Home() {
         <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: '58px', fontWeight: 800, lineHeight: 1.1, marginBottom: '20px', background: 'linear-gradient(135deg, #e8eaf2 0%, #5e9ef4 55%, #7c5ef4 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
           Get Your Amazon<br />Account Reinstated.
         </h1>
-        <p style={{ fontSize: '18px', color: '#7c8099', maxWidth: '520px', margin: '0 auto 40px', fontWeight: 300, lineHeight: 1.6 }}>
+        <p style={{ fontSize: '18px', color: '#7c8099', maxWidth: '520px', margin: '0 auto 40px', fontWeight: 300, lineHeight: 1.6, fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
           Generate professional Plans of Action, appeal letters and compliance documents for every Amazon violation — instantly. No signup required.
         </p>
         <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -48,7 +48,7 @@ export default function Home() {
           ].map(stat => (
             <div key={stat.label} style={{ textAlign: 'center' }}>
               <div style={{ fontFamily: 'Playfair Display, serif', fontSize: '28px', fontWeight: 800, color: '#5e9ef4' }}>{stat.num}</div>
-              <div style={{ fontSize: '13px', color: '#7c8099' }}>{stat.label}</div>
+              <div style={{ fontSize: '13px', color: '#7c8099', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>{stat.label}</div>
             </div>
           ))}
         </div>
@@ -73,7 +73,7 @@ export default function Home() {
                 onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)')}>
                 <div style={{ fontSize: '24px', marginBottom: '8px' }}>{item.icon}</div>
                 <div style={{ fontFamily: 'Playfair Display, serif', fontSize: '14px', fontWeight: 700, color: '#e8eaf2', marginBottom: '4px' }}>{item.name}</div>
-                <div style={{ fontSize: '12px', color: '#7c8099' }}>{item.desc}</div>
+                <div style={{ fontSize: '12px', color: '#7c8099', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>{item.desc}</div>
               </div>
             </Link>
           ))}
@@ -84,7 +84,7 @@ export default function Home() {
         <h2 style={{ fontFamily: 'Playfair Display, serif', fontSize: '32px', fontWeight: 800, color: '#e8eaf2', marginBottom: '12px' }}>
           Ready to get reinstated?
         </h2>
-        <p style={{ color: '#7c8099', fontSize: '16px', marginBottom: '28px' }}>Generate your first appeal in under 2 minutes. No signup required.</p>
+        <p style={{ color: '#7c8099', fontSize: '16px', marginBottom: '28px', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>Generate your first appeal in under 2 minutes. No signup required.</p>
         <Link href="/tools/compliance" style={{ display: 'inline-block', padding: '14px 48px', background: 'linear-gradient(135deg, #5e9ef4, #7c5ef4)', color: 'white', textDecoration: 'none', borderRadius: '10px', fontWeight: 700, fontSize: '16px' }}>
           Start For Free →
         </Link>
@@ -95,7 +95,7 @@ export default function Home() {
           <div style={{ width: '20px', height: '20px', background: 'linear-gradient(135deg, #5e9ef4, #7c5ef4)', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px' }}>⚡</div>
           <span style={{ fontFamily: 'Playfair Display, serif', fontSize: '14px', fontWeight: 700, color: '#e8eaf2' }}>Wextrion</span>
         </div>
-        <p style={{ fontSize: '12px', color: '#404357' }}>© 2026 Wextrion. All rights reserved.</p>
+        <p style={{ fontSize: '12px', color: '#404357', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>© 2026 Wextrion. All rights reserved.</p>
       </div>
     </div>
   )
