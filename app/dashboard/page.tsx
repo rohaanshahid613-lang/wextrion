@@ -15,22 +15,19 @@ export default function Dashboard() {
     })
   }, [])
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut()
-    router.push('/')
-  }
-
-  const tools = [
-    { icon: '🤖', name: 'AI Chatbot', desc: 'Ask anything, upload PDFs, fetch URLs', color: '#5e9ef4', href: '/tools/chatbot' },
-    { icon: '🎨', name: 'Image Designer', desc: 'Generate ultra-HD images from prompts', color: '#7c5ef4', href: '/tools/image' },
-    { icon: '📋', name: 'Compliance & POA', desc: 'Amazon appeals and policy audits', color: '#f4c45e', href: '/tools/compliance' },
-    { icon: '🔍', name: 'Web Research', desc: 'Real-time search with citations', color: '#4ef4b0', href: '/tools/chatbot' },
+  const appeals = [
+    { icon: '🔴', name: 'Andon Cord POA', desc: 'Fire, smoke, safety or injury complaints', color: '#f45e5e', type: 'andon' },
+    { icon: '🚫', name: 'Account Suspension', desc: 'Performance metrics or policy violations', color: '#5e9ef4', type: 'suspension' },
+    { icon: '📦', name: 'Listing Reinstatement', desc: 'Suppressed, removed or blocked listings', color: '#7c5ef4', type: 'listing' },
+    { icon: '⚖️', name: 'IP / Counterfeit', desc: 'Intellectual property and trademark claims', color: '#f4c45e', type: 'ip' },
+    { icon: '🏥', name: 'FDA / Health Violations', desc: 'Medical device and health claim issues', color: '#4ef4b0', type: 'fda' },
+    { icon: '↩️', name: 'High Return Rate', desc: 'Excessive returns and defect rate appeals', color: '#f4845e', type: 'return' },
+    { icon: '🚚', name: 'Late Shipment', desc: 'Late dispatch rate and fulfillment issues', color: '#5ef4f4', type: 'shipment' },
+    { icon: '⭐', name: 'Negative Feedback', desc: 'Feedback removal and rating appeals', color: '#c45ef4', type: 'feedback' },
   ]
 
   return (
     <div style={{ minHeight: '100vh', background: '#0b0c10' }}>
-      
-      {/* Navbar */}
       <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 40px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <div style={{ width: '32px', height: '32px', background: 'linear-gradient(135deg, #5e9ef4, #7c5ef4)', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px' }}>⚡</div>
@@ -38,37 +35,31 @@ export default function Dashboard() {
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <span style={{ fontSize: '13px', color: '#7c8099' }}>{user?.email}</span>
-          <button onClick={handleLogout} style={{ padding: '8px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: '#7c8099', cursor: 'pointer', fontSize: '13px' }}>
+          <button onClick={async () => { await supabase.auth.signOut(); router.push('/') }} style={{ padding: '8px 16px', background: 'transparent', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: '#7c8099', cursor: 'pointer', fontSize: '13px' }}>
             Logout
           </button>
         </div>
       </nav>
 
-      {/* Content */}
       <div style={{ padding: '48px 40px', maxWidth: '1100px', margin: '0 auto' }}>
-        
-        {/* Welcome */}
-        <div style={{ marginBottom: '48px' }}>
-          <h1 style={{ fontFamily: 'Syne, sans-serif', fontSize: '36px', fontWeight: 800, color: '#e8eaf2', marginBottom: '8px' }}>
-            Welcome to Wextrion 👋
+        <div style={{ marginBottom: '40px' }}>
+          <h1 style={{ fontFamily: 'Syne, sans-serif', fontSize: '32px', fontWeight: 800, color: '#e8eaf2', marginBottom: '8px' }}>
+            Appeal Generator 📋
           </h1>
-          <p style={{ color: '#7c8099', fontSize: '16px' }}>Choose a tool to get started</p>
+          <p style={{ color: '#7c8099', fontSize: '15px' }}>Select the type of appeal you need to generate</p>
         </div>
 
-        {/* Tool Cards */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px' }}>
-          {tools.map((tool) => (
-            <Link key={tool.name} href={tool.href} style={{ textDecoration: 'none' }}>
-              <div style={{ background: 'rgba(19,21,28,0.8)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '16px', padding: '28px', cursor: 'pointer', position: 'relative', overflow: 'hidden', transition: 'all 0.2s' }}
+          {appeals.map((appeal) => (
+            <Link key={appeal.type} href={`/tools/compliance?type=${appeal.type}`} style={{ textDecoration: 'none' }}>
+              <div style={{ background: 'rgba(19,21,28,0.8)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '16px', padding: '24px', cursor: 'pointer', position: 'relative', overflow: 'hidden', transition: 'all 0.2s' }}
                 onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(94,158,244,0.3)')}
                 onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)')}>
-                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: `linear-gradient(90deg, ${tool.color}, transparent)` }} />
-                <div style={{ fontSize: '36px', marginBottom: '16px' }}>{tool.icon}</div>
-                <div style={{ fontFamily: 'Syne, sans-serif', fontSize: '18px', fontWeight: 700, color: '#e8eaf2', marginBottom: '8px' }}>{tool.name}</div>
-                <div style={{ fontSize: '13px', color: '#7c8099', lineHeight: 1.6, marginBottom: '20px' }}>{tool.desc}</div>
-                <div style={{ display: 'inline-block', fontSize: '13px', fontWeight: 600, color: tool.color }}>
-                  Open tool →
-                </div>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: `linear-gradient(90deg, ${appeal.color}, transparent)` }} />
+                <div style={{ fontSize: '28px', marginBottom: '12px' }}>{appeal.icon}</div>
+                <div style={{ fontFamily: 'Syne, sans-serif', fontSize: '16px', fontWeight: 700, color: '#e8eaf2', marginBottom: '6px' }}>{appeal.name}</div>
+                <div style={{ fontSize: '12px', color: '#7c8099', lineHeight: 1.5, marginBottom: '16px' }}>{appeal.desc}</div>
+                <div style={{ fontSize: '12px', fontWeight: 600, color: appeal.color }}>Generate Appeal →</div>
               </div>
             </Link>
           ))}
