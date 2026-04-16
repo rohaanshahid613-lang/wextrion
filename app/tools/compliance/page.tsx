@@ -302,116 +302,92 @@ function ComplianceContent() {
   const [activeId, setActiveId] = useState<string | null>(null)
   const [user, setUser] = useState<any>(null)
   const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null)
   const [freeUses, setFreeUses] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return parseInt(localStorage.getItem('wextrion_free_uses') || '0')
-    }
+    if (typeof window !== 'undefined') return parseInt(localStorage.getItem('wextrion_free_uses') || '0')
     return 0
   })
   const FREE_LIMIT = 3
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        setUser(session.user)
-        loadHistory(session.user.id)
-      }
+      if (session) { setUser(session.user); loadHistory(session.user.id) }
     })
   }, [])
 
   const loadHistory = async (userId: string) => {
-    const { data } = await supabase
-      .from('appeals')
-      .select('*')
-      .eq('user_id', userId)
-      .order('created_at', { ascending: false })
+    const { data } = await supabase.from('appeals').select('*').eq('user_id', userId).order('created_at', { ascending: false })
     if (data) setHistory(data)
   }
 
   const saveToHistory = async (type: string, product: string, content: string) => {
     if (!user) return
-    const { data } = await supabase
-      .from('appeals')
-      .insert({
-        user_id: user.id,
-        appeal_type: appealTypes[type],
-        product_name: product || 'Unknown Product',
-        content: content,
-        created_at: new Date().toISOString()
-      })
-      .select()
-      .single()
-    if (data) {
-      setHistory(prev => [data, ...prev])
-      setActiveId(data.id)
-    }
+    const { data } = await supabase.from('appeals').insert({
+      user_id: user.id, appeal_type: appealTypes[type], product_name: product || 'Unknown Product', content, created_at: new Date().toISOString()
+    }).select().single()
+    if (data) { setHistory(prev => [data, ...prev]); setActiveId(data.id) }
   }
 
-  const deleteAppeal = async (id: string) => {
-    await supabase.from('appeals').delete().eq('id', id)
-    setHistory(prev => prev.filter(h => h.id !== id))
-    if (activeId === id) { setResult(''); setActiveId(null) }
+  const deleteAppeal = async () => {
+    if (!deleteConfirm) return
+    await supabase.from('appeals').delete().eq('id', deleteConfirm)
+    setHistory(prev => prev.filter(h => h.id !== deleteConfirm))
+    if (activeId === deleteConfirm) { setResult(''); setActiveId(null) }
+    setDeleteConfirm(null)
   }
 
   const generateAppeal = () => {
     if (!details.trim()) return
-    if (!user && freeUses >= FREE_LIMIT) {
-      window.location.href = '/auth/signup'
-      return
-    }
+    if (!user && freeUses >= FREE_LIMIT) { window.location.href = '/auth/signup'; return }
     const poa = generatePOA(appealType, productName || 'Your Product', asin || 'B00XXXXXXX', details, marketplace)
     setResult(poa)
-    if (user) {
-      saveToHistory(appealType, productName, poa)
-    } else {
+    if (user) saveToHistory(appealType, productName, poa)
+    else {
       const newCount = freeUses + 1
       setFreeUses(newCount)
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('wextrion_free_uses', newCount.toString())
-      }
+      if (typeof window !== 'undefined') localStorage.setItem('wextrion_free_uses', newCount.toString())
     }
   }
 
-  const loadAppeal = (item: any) => {
-    setResult(item.content)
-    setActiveId(item.id)
-  }
-
-  const startNew = () => {
-    setResult('')
-    setDetails('')
-    setProductName('')
-    setAsin('')
-    setActiveId(null)
-  }
-
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(result)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
-
+  const loadAppeal = (item: any) => { setResult(item.content); setActiveId(item.id) }
+  const startNew = () => { setResult(''); setDetails(''); setProductName(''); setAsin(''); setActiveId(null) }
+  const copyToClipboard = () => { navigator.clipboard.writeText(result); setCopied(true); setTimeout(() => setCopied(false), 2000) }
   const downloadText = () => {
     const blob = new Blob([result], { type: 'text/plain' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
-    a.href = url
-    a.download = `wextrion-${appealType}-appeal.txt`
-    a.click()
+    a.href = url; a.download = `wextrion-${appealType}-appeal.txt`; a.click()
   }
-
-  const formatDate = (dateStr: string) => {
-    return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-  }
+  const formatDate = (d: string) => new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
 
   return (
     <div style={{ minHeight: '100vh', background: '#0b0c10', display: 'flex', flexDirection: 'column' }}>
 
+      {/* Delete Confirmation Popup */}
+      {deleteConfirm && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ background: '#13151c', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', padding: '32px', maxWidth: '380px', width: '90%', textAlign: 'center' }}>
+            <div style={{ fontSize: '36px', marginBottom: '16px' }}>🗑️</div>
+            <h3 style={{ fontFamily: 'Playfair Display, serif', fontSize: '20px', fontWeight: 700, color: '#e8eaf2', marginBottom: '8px' }}>Delete this appeal?</h3>
+            <p style={{ color: '#7c8099', fontSize: '14px', marginBottom: '24px', lineHeight: 1.6 }}>This action cannot be undone. The appeal will be permanently removed from your history.</p>
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <button onClick={() => setDeleteConfirm(null)}
+                style={{ flex: 1, padding: '11px', background: 'transparent', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: '#7c8099', cursor: 'pointer', fontSize: '14px', fontWeight: 600 }}>
+                Cancel
+              </button>
+              <button onClick={deleteAppeal}
+                style={{ flex: 1, padding: '11px', background: 'linear-gradient(135deg, #f45e5e, #f4845e)', border: 'none', borderRadius: '8px', color: 'white', cursor: 'pointer', fontSize: '14px', fontWeight: 700 }}>
+                Yes, Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Navbar */}
       <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 24px', borderBottom: '1px solid rgba(255,255,255,0.06)', zIndex: 10 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <button onClick={() => setSidebarOpen(!sidebarOpen)}
-            style={{ background: 'transparent', border: 'none', color: '#7c8099', cursor: 'pointer', fontSize: '18px', padding: '4px' }}>☰</button>
+          <button onClick={() => setSidebarOpen(!sidebarOpen)} style={{ background: 'transparent', border: 'none', color: '#7c8099', cursor: 'pointer', fontSize: '18px', padding: '4px' }}>☰</button>
           <div style={{ width: '26px', height: '26px', background: 'linear-gradient(135deg, #5e9ef4, #7c5ef4)', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>⚡</div>
           <span style={{ fontFamily: 'Playfair Display, serif', fontSize: '16px', fontWeight: 800, color: '#e8eaf2' }}>Wextrion</span>
         </div>
@@ -438,12 +414,10 @@ function ComplianceContent() {
         {sidebarOpen && (
           <div style={{ width: '260px', minWidth: '260px', background: '#0f1117', borderRight: '1px solid rgba(255,255,255,0.06)', display: 'flex', flexDirection: 'column', height: 'calc(100vh - 53px)', overflowY: 'auto' }}>
             <div style={{ padding: '12px' }}>
-              <button onClick={startNew}
-                style={{ width: '100%', padding: '10px', background: 'linear-gradient(135deg, #5e9ef4, #7c5ef4)', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 700, fontSize: '13px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+              <button onClick={startNew} style={{ width: '100%', padding: '10px', background: 'linear-gradient(135deg, #5e9ef4, #7c5ef4)', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 700, fontSize: '13px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
                 ✏️ New Appeal
               </button>
             </div>
-
             <div style={{ padding: '0 12px', flex: 1 }}>
               {!user ? (
                 <div style={{ textAlign: 'center', padding: '24px 12px' }}>
@@ -461,8 +435,7 @@ function ComplianceContent() {
                 <>
                   <p style={{ fontSize: '11px', color: '#404357', padding: '8px 4px', textTransform: 'uppercase', letterSpacing: '0.08em' }}>History</p>
                   {history.map((item) => (
-                    <div key={item.id}
-                      style={{ padding: '10px 12px', borderRadius: '8px', cursor: 'pointer', marginBottom: '4px', background: activeId === item.id ? 'rgba(94,158,244,0.1)' : 'transparent', border: activeId === item.id ? '1px solid rgba(94,158,244,0.2)' : '1px solid transparent', transition: 'all 0.15s', position: 'relative', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '8px' }}>
+                    <div key={item.id} style={{ padding: '10px 12px', borderRadius: '8px', cursor: 'pointer', marginBottom: '4px', background: activeId === item.id ? 'rgba(94,158,244,0.1)' : 'transparent', border: activeId === item.id ? '1px solid rgba(94,158,244,0.2)' : '1px solid transparent', transition: 'all 0.15s', position: 'relative', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '8px' }}>
                       <div onClick={() => loadAppeal(item)} style={{ flex: 1, minWidth: 0 }}>
                         <div style={{ fontSize: '12px', fontWeight: 600, color: activeId === item.id ? '#5e9ef4' : '#e8eaf2', marginBottom: '3px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                           {item.product_name}
@@ -470,12 +443,9 @@ function ComplianceContent() {
                         <div style={{ fontSize: '11px', color: '#7c8099', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                           {item.appeal_type}
                         </div>
-                        <div style={{ fontSize: '10px', color: '#404357', marginTop: '2px' }}>
-                          {formatDate(item.created_at)}
-                        </div>
+                        <div style={{ fontSize: '10px', color: '#404357', marginTop: '2px' }}>{formatDate(item.created_at)}</div>
                       </div>
-                      <button
-                        onClick={(e) => { e.stopPropagation(); deleteAppeal(item.id) }}
+                      <button onClick={(e) => { e.stopPropagation(); setDeleteConfirm(item.id) }}
                         title="Delete appeal"
                         style={{ background: 'rgba(244,94,94,0.08)', border: '1px solid rgba(244,94,94,0.15)', borderRadius: '4px', color: '#f45e5e', cursor: 'pointer', fontSize: '11px', padding: '3px 7px', flexShrink: 0, marginTop: '2px' }}>
                         ✕
@@ -490,8 +460,6 @@ function ComplianceContent() {
 
         {/* MAIN CONTENT */}
         <div style={{ flex: 1, display: 'grid', gridTemplateColumns: result ? '1fr 1fr' : '1fr', overflow: 'auto', padding: '32px 40px' }}>
-
-          {/* FORM */}
           <div style={{ paddingRight: result ? '20px' : '0', maxWidth: result ? '100%' : '900px', margin: result ? '0' : '0 auto', width: '100%' }}>
             <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: '26px', fontWeight: 800, color: '#e8eaf2', marginBottom: '4px' }}>📋 Appeal Generator</h1>
             <p style={{ color: '#7c8099', fontSize: '14px', marginBottom: '24px' }}>Fill in the details to generate your professional appeal</p>
@@ -581,7 +549,6 @@ function ComplianceContent() {
             </div>
           </div>
 
-          {/* RESULT */}
           {result && (
             <div style={{ paddingLeft: '20px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
