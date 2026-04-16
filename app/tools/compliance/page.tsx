@@ -17,7 +17,6 @@ const appealTypes: any = {
 
 function generatePOA(type: string, productName: string, asin: string, details: string, marketplace: string): string {
   const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-  
   const templates: any = {
     andon: `Dear Amazon Seller Performance Team,
 
@@ -28,7 +27,6 @@ ${details}
 
 ROOT CAUSE ANALYSIS:
 After conducting a comprehensive internal investigation, we have identified the following root causes:
-
 1. We acknowledge the concern raised regarding our product and have taken immediate steps to investigate the matter thoroughly.
 2. Our quality control processes were reviewed and we identified gaps that may have contributed to this issue.
 3. We have traced the specific batch/lot numbers associated with any reported concerns.
@@ -185,11 +183,11 @@ IMMEDIATE CORRECTIVE ACTIONS:
 5. We have reviewed our product packaging to ensure compliance.
 
 LISTING CHANGES MADE:
-1. Removed all disease treatment or prevention claims
-2. Removed all structure/function claims that are not permitted
-3. Updated product imagery to remove non-compliant text
-4. Added appropriate disclaimers where required
-5. Ensured all remaining claims are truthful and substantiated
+1. Removed all disease treatment or prevention claims.
+2. Removed all structure/function claims that are not permitted.
+3. Updated product imagery to remove non-compliant text.
+4. Added appropriate disclaimers where required.
+5. Ensured all remaining claims are truthful and substantiated.
 
 PREVENTIVE MEASURES:
 1. Compliance Review Process: All listings reviewed by compliance specialist before going live.
@@ -295,14 +293,12 @@ Sincerely,
 [Your Business Name]
 Date: ${date}`,
   }
-
   return templates[type] || templates.suspension
 }
 
 function ComplianceContent() {
   const searchParams = useSearchParams()
   const initialType = searchParams.get('type') || 'andon'
-  
   const [appealType, setAppealType] = useState(initialType)
   const [productName, setProductName] = useState('')
   const [asin, setAsin] = useState('')
@@ -311,11 +307,27 @@ function ComplianceContent() {
   const [result, setResult] = useState('')
   const [copied, setCopied] = useState(false)
   const [files, setFiles] = useState<File[]>([])
+  const [freeUses, setFreeUses] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return parseInt(localStorage.getItem('wextrion_free_uses') || '0')
+    }
+    return 0
+  })
+  const FREE_LIMIT = 3
 
   const generateAppeal = () => {
     if (!details.trim()) return
+    if (freeUses >= FREE_LIMIT) {
+      window.location.href = '/auth/signup'
+      return
+    }
     const poa = generatePOA(appealType, productName || 'Your Product', asin || 'B00XXXXXXX', details, marketplace)
     setResult(poa)
+    const newCount = freeUses + 1
+    setFreeUses(newCount)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('wextrion_free_uses', newCount.toString())
+    }
   }
 
   const copyToClipboard = () => {
@@ -344,15 +356,12 @@ function ComplianceContent() {
       </nav>
 
       <div style={{ flex: 1, display: 'grid', gridTemplateColumns: result ? '1fr 1fr' : '1fr', gap: '0', maxWidth: '1200px', width: '100%', margin: '0 auto', padding: '24px 20px' }}>
-        
         <div style={{ paddingRight: result ? '20px' : '0' }}>
-          <h1 style={{ fontFamily: 'Syne, sans-serif', fontSize: '24px', fontWeight: 800, color: '#e8eaf2', marginBottom: '4px' }}>
-            📋 Appeal Generator
-          </h1>
+          <h1 style={{ fontFamily: 'Syne, sans-serif', fontSize: '24px', fontWeight: 800, color: '#e8eaf2', marginBottom: '4px' }}>📋 Appeal Generator</h1>
           <p style={{ color: '#7c8099', fontSize: '14px', marginBottom: '24px' }}>Fill in the details below to generate your appeal</p>
 
           <div style={{ background: 'rgba(19,21,28,0.8)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '16px', padding: '24px' }}>
-            
+
             <div style={{ marginBottom: '16px' }}>
               <label style={{ display: 'block', fontSize: '13px', color: '#7c8099', marginBottom: '6px' }}>Appeal Type</label>
               <select value={appealType} onChange={e => setAppealType(e.target.value)}
@@ -401,43 +410,46 @@ function ComplianceContent() {
 
             <div style={{ marginBottom: '16px' }}>
               <label style={{ display: 'block', fontSize: '13px', color: '#7c8099', marginBottom: '6px' }}>Supporting Documents (Optional)</label>
-              <div
-                onClick={() => document.getElementById('fileInput')?.click()}
+              <div onClick={() => document.getElementById('fileInput')?.click()}
                 style={{ width: '100%', background: 'rgba(255,255,255,0.03)', border: '2px dashed rgba(255,255,255,0.1)', borderRadius: '8px', padding: '20px', textAlign: 'center', cursor: 'pointer', color: '#7c8099', fontSize: '13px' }}>
                 <div style={{ fontSize: '24px', marginBottom: '8px' }}>📎</div>
                 <div>Click to attach invoices, test reports, images or any supporting docs</div>
                 <div style={{ fontSize: '11px', marginTop: '4px', color: '#404357' }}>PDF, JPG, PNG, DOCX accepted</div>
-                <input
-                  id="fileInput"
-                  type="file"
-                  multiple
-                  accept=".pdf,.jpg,.jpeg,.png,.docx,.doc"
+                <input id="fileInput" type="file" multiple accept=".pdf,.jpg,.jpeg,.png,.docx,.doc"
                   style={{ display: 'none' }}
                   onChange={e => {
                     const newFiles = Array.from(e.target.files || [])
                     setFiles(prev => [...prev, ...newFiles])
-                  }}
-                />
+                  }} />
               </div>
               {files.length > 0 && (
                 <div style={{ marginTop: '10px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
                   {files.map((file, i) => (
                     <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'rgba(94,158,244,0.08)', border: '1px solid rgba(94,158,244,0.15)', borderRadius: '6px', padding: '8px 12px' }}>
                       <span style={{ fontSize: '12px', color: '#5e9ef4' }}>📄 {file.name}</span>
-                      <button
-                        onClick={() => setFiles(prev => prev.filter((_, idx) => idx !== i))}
-                        style={{ background: 'transparent', border: 'none', color: '#f45e5e', cursor: 'pointer', fontSize: '14px' }}>
-                        ✕
-                      </button>
+                      <button onClick={() => setFiles(prev => prev.filter((_, idx) => idx !== i))}
+                        style={{ background: 'transparent', border: 'none', color: '#f45e5e', cursor: 'pointer', fontSize: '14px' }}>✕</button>
                     </div>
                   ))}
                 </div>
               )}
             </div>
 
+            <div style={{ marginBottom: '8px' }}>
+              {freeUses < FREE_LIMIT ? (
+                <p style={{ fontSize: '12px', color: '#4ef4b0', marginBottom: '8px', textAlign: 'center' }}>
+                  ✓ {FREE_LIMIT - freeUses} free {FREE_LIMIT - freeUses === 1 ? 'appeal' : 'appeals'} remaining — no signup needed
+                </p>
+              ) : (
+                <p style={{ fontSize: '12px', color: '#f4c45e', marginBottom: '8px', textAlign: 'center' }}>
+                  ⚡ Free limit reached — sign up free to continue
+                </p>
+              )}
+            </div>
+
             <button onClick={generateAppeal} disabled={!details.trim()}
               style={{ width: '100%', padding: '14px', background: details.trim() ? 'linear-gradient(135deg, #5e9ef4, #7c5ef4)' : 'rgba(255,255,255,0.05)', color: details.trim() ? 'white' : '#7c8099', border: 'none', borderRadius: '10px', fontWeight: 700, fontSize: '15px', cursor: details.trim() ? 'pointer' : 'not-allowed' }}>
-              Generate Professional Appeal →
+              {freeUses >= FREE_LIMIT ? 'Sign Up to Continue →' : 'Generate Professional Appeal →'}
             </button>
           </div>
         </div>
@@ -445,9 +457,7 @@ function ComplianceContent() {
         {result && (
           <div style={{ paddingLeft: '20px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-              <h2 style={{ fontFamily: 'Syne, sans-serif', fontSize: '18px', fontWeight: 700, color: '#e8eaf2' }}>
-                Generated Appeal
-              </h2>
+              <h2 style={{ fontFamily: 'Syne, sans-serif', fontSize: '18px', fontWeight: 700, color: '#e8eaf2' }}>Generated Appeal</h2>
               <div style={{ display: 'flex', gap: '8px' }}>
                 <button onClick={copyToClipboard}
                   style={{ padding: '8px 16px', background: copied ? 'rgba(78,244,176,0.1)' : 'rgba(255,255,255,0.05)', border: `1px solid ${copied ? 'rgba(78,244,176,0.3)' : 'rgba(255,255,255,0.1)'}`, borderRadius: '8px', color: copied ? '#4ef4b0' : '#7c8099', cursor: 'pointer', fontSize: '13px' }}>
