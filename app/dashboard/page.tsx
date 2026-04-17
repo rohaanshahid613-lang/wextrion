@@ -13,18 +13,30 @@ export default function Dashboard() {
   const { theme } = useTheme()
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (!session) router.push('/auth/login')
+  const checkSession = async () => {
+    const { data: { session } } = await supabase.auth.getSession()
+    if (!session) {
+      const { data } = await supabase.auth.refreshSession()
+      if (!data.session) router.push('/auth/login')
       else {
-        setUser(session.user)
-        const key = `wextrion_welcomed_${session.user.id}`
+        setUser(data.session.user)
+        const key = `wextrion_welcomed_${data.session.user.id}`
         if (!localStorage.getItem(key)) {
           setShowWelcome(true)
           localStorage.setItem(key, 'true')
         }
       }
-    })
-  }, [])
+    } else {
+      setUser(session.user)
+      const key = `wextrion_welcomed_${session.user.id}`
+      if (!localStorage.getItem(key)) {
+        setShowWelcome(true)
+        localStorage.setItem(key, 'true')
+      }
+    }
+  }
+  checkSession()
+}, [])
 
   const getName = (email: string) => {
     if (!email) return 'there'
