@@ -1,7 +1,9 @@
 'use client'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
+import ThemeSwitcher from '@/components/ThemeSwitcher'
+import { useTheme } from '@/components/ThemeProvider'
 
 const riskyKeywords: any = {
   US: [
@@ -30,40 +32,23 @@ const riskyKeywords: any = {
     { word: 'weight loss', alternatives: ['weight management', 'body composition support', 'fitness support'] },
     { word: 'fat burning', alternatives: ['metabolism support', 'energy support', 'active lifestyle support'] },
     { word: 'anti-inflammatory', alternatives: ['comfort support', 'soothing', 'recovery support'] },
-    { word: 'diagnose', alternatives: ['assess', 'evaluate', 'check'] },
-    { word: 'diagnoses', alternatives: ['assesses', 'evaluates', 'checks'] },
-    { word: 'antiviral', alternatives: ['immune support', 'wellness defense', 'health protection'] },
-    { word: 'antibiotic', alternatives: ['cleansing', 'purifying', 'defense support'] },
   ],
   UK: [
     { word: 'cure', alternatives: ['support', 'help maintain', 'promote'] },
     { word: 'treat', alternatives: ['support', 'help with', 'assist'] },
-    { word: 'treatment', alternatives: ['support', 'care', 'relief'] },
-    { word: 'heal', alternatives: ['soothe', 'support recovery', 'assist'] },
-    { word: 'prevent', alternatives: ['help reduce the risk of', 'support against', 'protect'] },
     { word: 'disease', alternatives: ['condition', 'concern', 'issue'] },
-    { word: 'disorder', alternatives: ['condition', 'concern', 'imbalance'] },
     { word: 'mhra approved', alternatives: ['quality tested', 'third-party tested', 'quality assured'] },
     { word: 'clinically proven', alternatives: ['studied', 'research-backed', 'quality tested'] },
-    { word: 'guaranteed', alternatives: ['designed to', 'formulated to', 'intended to'] },
     { word: 'pain relief', alternatives: ['comfort support', 'soothing support', 'comfort care'] },
     { word: 'weight loss', alternatives: ['weight management', 'body composition support', 'fitness support'] },
   ],
   CA: [
     { word: 'cure', alternatives: ['support', 'help maintain', 'promote'] },
     { word: 'treat', alternatives: ['support', 'help with', 'assist'] },
-    { word: 'treatment', alternatives: ['support', 'care', 'relief'] },
     { word: 'disease', alternatives: ['condition', 'concern', 'issue'] },
-    { word: 'disorder', alternatives: ['condition', 'concern', 'imbalance'] },
-    { word: 'health canada approved', alternatives: ['quality tested', 'third-party tested', 'quality assured'] },
     { word: 'clinically proven', alternatives: ['studied', 'research-backed', 'quality tested'] },
-    { word: 'guaranteed', alternatives: ['designed to', 'formulated to', 'intended to'] },
     { word: 'pain relief', alternatives: ['comfort support', 'soothing support', 'comfort care'] },
     { word: 'weight loss', alternatives: ['weight management', 'body composition support', 'fitness support'] },
-    { word: 'relieves', alternatives: ['helps with', 'supports', 'soothes'] },
-    { word: 'sleep aid', alternatives: ['relaxation support', 'calming routine', 'bedtime wellness'] },
-    { word: 'acupressure', alternatives: ['targeted pressure massage', 'pressure-point inspired'] },
-    { word: 'stress relief', alternatives: ['stress relaxation support', 'calming support'] },
   ],
 }
 
@@ -113,6 +98,7 @@ function HighlightedContent({ content, riskyWords }: { content: string, riskyWor
 }
 
 export default function ContentChecker() {
+  const { theme } = useTheme()
   const [marketplace, setMarketplace] = useState('US')
   const [content, setContent] = useState('')
   const [extraExplain, setExtraExplain] = useState('')
@@ -123,8 +109,6 @@ export default function ContentChecker() {
   const [user, setUser] = useState<any>(null)
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null)
-  const [sessionSaved, setSessionSaved] = useState(false)
-  const currentSessionId = useRef<string | null>(null)
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -143,19 +127,7 @@ export default function ContentChecker() {
     const { data } = await supabase.from('content_checks').insert({
       user_id: user.id, marketplace, original_content: preview, risky_count: count, created_at: new Date().toISOString()
     }).select().single()
-    if (data) {
-      setHistory(prev => [data, ...prev])
-      setActiveId(data.id)
-      currentSessionId.current = data.id
-      setSessionSaved(true)
-    }
-  }
-
-  const updateHistory = async (count: number) => {
-    if (!user || !currentSessionId.current) return
-    const preview = content.substring(0, 80) + (content.length > 80 ? '...' : '')
-    await supabase.from('content_checks').update({ original_content: preview, risky_count: count }).eq('id', currentSessionId.current)
-    setHistory(prev => prev.map(h => h.id === currentSessionId.current ? { ...h, original_content: preview, risky_count: count } : h))
+    if (data) { setHistory(prev => [data, ...prev]); setActiveId(data.id) }
   }
 
   const confirmDelete = (id: string) => setDeleteConfirm(id)
@@ -164,13 +136,7 @@ export default function ContentChecker() {
     if (!deleteConfirm) return
     await supabase.from('content_checks').delete().eq('id', deleteConfirm)
     setHistory(prev => prev.filter(h => h.id !== deleteConfirm))
-    if (activeId === deleteConfirm) {
-      setAnalyzed(false)
-      setRiskyWords([])
-      setActiveId(null)
-      currentSessionId.current = null
-      setSessionSaved(false)
-    }
+    if (activeId === deleteConfirm) { setAnalyzed(false); setRiskyWords([]) }
     setDeleteConfirm(null)
   }
 
@@ -179,47 +145,24 @@ export default function ContentChecker() {
     const found = analyzeContent(content, marketplace)
     setRiskyWords(found)
     setAnalyzed(true)
-    if (user) {
-      if (!sessionSaved) {
-        saveToHistory(content, found.length)
-      } else {
-        updateHistory(found.length)
-      }
-    }
+    if (user) saveToHistory(content, found.length)
   }
 
-  const startNew = () => {
-    setContent('')
-    setExtraExplain('')
-    setRiskyWords([])
-    setAnalyzed(false)
-    setActiveId(null)
-    setSessionSaved(false)
-    currentSessionId.current = null
-  }
-
-  const loadFromHistory = (item: any) => {
-    setActiveId(item.id)
-    currentSessionId.current = item.id
-    setSessionSaved(true)
-    setAnalyzed(false)
-    setRiskyWords([])
-  }
-
+  const reset = () => { setContent(''); setExtraExplain(''); setRiskyWords([]); setAnalyzed(false); setActiveId(null) }
   const formatDate = (d: string) => new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0b0c10', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ minHeight: '100vh', background: theme.bg, display: 'flex', flexDirection: 'column' }}>
 
-      {/* Delete Confirmation Popup */}
+      {/* Delete Popup */}
       {deleteConfirm && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ background: '#13151c', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px', padding: '32px', maxWidth: '380px', width: '90%', textAlign: 'center' }}>
+          <div style={{ background: theme.surface, border: `1px solid ${theme.accent}22`, borderRadius: '16px', padding: '32px', maxWidth: '380px', width: '90%', textAlign: 'center' }}>
             <div style={{ fontSize: '36px', marginBottom: '16px' }}>🗑️</div>
-            <h3 style={{ fontFamily: 'Playfair Display, serif', fontSize: '20px', fontWeight: 700, color: '#e8eaf2', marginBottom: '8px' }}>Delete this check?</h3>
-            <p style={{ color: '#7c8099', fontSize: '14px', marginBottom: '24px', lineHeight: 1.6 }}>This action cannot be undone. The content check will be permanently removed from your history.</p>
+            <h3 style={{ fontFamily: 'Playfair Display, serif', fontSize: '20px', fontWeight: 700, color: theme.text, marginBottom: '8px' }}>Delete this check?</h3>
+            <p style={{ color: theme.muted, fontSize: '14px', marginBottom: '24px', lineHeight: 1.6 }}>This action cannot be undone.</p>
             <div style={{ display: 'flex', gap: '10px' }}>
-              <button onClick={() => setDeleteConfirm(null)} style={{ flex: 1, padding: '11px', background: 'transparent', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', color: '#7c8099', cursor: 'pointer', fontSize: '14px', fontWeight: 600 }}>Cancel</button>
+              <button onClick={() => setDeleteConfirm(null)} style={{ flex: 1, padding: '11px', background: 'transparent', border: `1px solid ${theme.accent}33`, borderRadius: '8px', color: theme.muted, cursor: 'pointer', fontSize: '14px', fontWeight: 600 }}>Cancel</button>
               <button onClick={deleteItem} style={{ flex: 1, padding: '11px', background: 'linear-gradient(135deg, #f45e5e, #f4845e)', border: 'none', borderRadius: '8px', color: 'white', cursor: 'pointer', fontSize: '14px', fontWeight: 700 }}>Yes, Delete</button>
             </div>
           </div>
@@ -227,22 +170,25 @@ export default function ContentChecker() {
       )}
 
       {/* Navbar */}
-      <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 24px', borderBottom: '1px solid rgba(255,255,255,0.06)', zIndex: 10 }}>
+      <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 24px', borderBottom: `1px solid ${theme.accent}18`, zIndex: 10 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <button onClick={() => setSidebarOpen(!sidebarOpen)} style={{ background: 'transparent', border: 'none', color: '#7c8099', cursor: 'pointer', fontSize: '18px' }}>☰</button>
-          <div style={{ width: '26px', height: '26px', background: 'linear-gradient(135deg, #5e9ef4, #7c5ef4)', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>⚡</div>
-          <span style={{ fontFamily: 'Playfair Display, serif', fontSize: '16px', fontWeight: 800, color: '#e8eaf2' }}>Wextrion</span>
+          <button onClick={() => setSidebarOpen(!sidebarOpen)} style={{ background: 'transparent', border: 'none', color: theme.muted, cursor: 'pointer', fontSize: '18px' }}>☰</button>
+          <div style={{ width: '26px', height: '26px', background: `linear-gradient(135deg, ${theme.accent}, ${theme.accent2})`, borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>⚡</div>
+          <span style={{ fontFamily: 'Playfair Display, serif', fontSize: '16px', fontWeight: 800, color: theme.text }}>Wextrion</span>
         </div>
-        <Link href="/dashboard" style={{ fontSize: '13px', color: '#7c8099', textDecoration: 'none' }}>← Dashboard</Link>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <ThemeSwitcher />
+          <Link href="/dashboard" style={{ fontSize: '13px', color: theme.muted, textDecoration: 'none' }}>← Dashboard</Link>
+        </div>
       </nav>
 
       <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
 
         {/* SIDEBAR */}
         {sidebarOpen && (
-          <div style={{ width: '260px', minWidth: '260px', background: '#0f1117', borderRight: '1px solid rgba(255,255,255,0.06)', display: 'flex', flexDirection: 'column', height: 'calc(100vh - 53px)', overflowY: 'auto' }}>
+          <div style={{ width: '260px', minWidth: '260px', background: theme.surface, borderRight: `1px solid ${theme.accent}18`, display: 'flex', flexDirection: 'column', height: 'calc(100vh - 53px)', overflowY: 'auto' }}>
             <div style={{ padding: '12px' }}>
-              <button onClick={startNew} style={{ width: '100%', padding: '10px', background: 'linear-gradient(135deg, #f4c45e, #f4845e)', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 700, fontSize: '13px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+              <button onClick={reset} style={{ width: '100%', padding: '10px', background: `linear-gradient(135deg, ${theme.accent}, ${theme.accent2})`, color: theme.bg, border: 'none', borderRadius: '8px', fontWeight: 700, fontSize: '13px', cursor: 'pointer' }}>
                 ✏️ New Check
               </button>
             </div>
@@ -250,23 +196,26 @@ export default function ContentChecker() {
               {!user ? (
                 <div style={{ textAlign: 'center', padding: '24px 12px' }}>
                   <div style={{ fontSize: '24px', marginBottom: '8px' }}>🔒</div>
-                  <p style={{ fontSize: '12px', color: '#7c8099', marginBottom: '12px' }}>Sign up to save history</p>
-                  <Link href="/auth/signup" style={{ display: 'block', padding: '8px', background: 'rgba(244,196,94,0.1)', border: '1px solid rgba(244,196,94,0.2)', borderRadius: '6px', color: '#f4c45e', textDecoration: 'none', fontSize: '12px', fontWeight: 600 }}>Create Free Account</Link>
+                  <p style={{ fontSize: '12px', color: theme.muted, marginBottom: '12px' }}>Sign up to save history</p>
+                  <Link href="/auth/signup" style={{ display: 'block', padding: '8px', background: `${theme.accent}18`, border: `1px solid ${theme.accent}33`, borderRadius: '6px', color: theme.accent, textDecoration: 'none', fontSize: '12px', fontWeight: 600 }}>
+                    Create Free Account
+                  </Link>
                 </div>
               ) : history.length === 0 ? (
-                <p style={{ fontSize: '12px', color: '#404357', textAlign: 'center', padding: '24px 12px' }}>No checks yet.</p>
+                <p style={{ fontSize: '12px', color: theme.muted, textAlign: 'center', padding: '24px 12px' }}>No checks yet.</p>
               ) : (
                 <>
-                  <p style={{ fontSize: '11px', color: '#404357', padding: '8px 4px', textTransform: 'uppercase', letterSpacing: '0.08em' }}>History</p>
+                  <p style={{ fontSize: '11px', color: theme.muted, padding: '8px 4px', textTransform: 'uppercase', letterSpacing: '0.08em' }}>History</p>
                   {history.map((item) => (
-                    <div key={item.id} style={{ padding: '10px 12px', borderRadius: '8px', cursor: 'pointer', marginBottom: '4px', background: activeId === item.id ? 'rgba(244,196,94,0.1)' : 'transparent', border: activeId === item.id ? '1px solid rgba(244,196,94,0.2)' : '1px solid transparent', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '8px' }}
-                      onClick={() => loadFromHistory(item)}>
+                    <div key={item.id} style={{ padding: '10px 12px', borderRadius: '8px', marginBottom: '4px', background: activeId === item.id ? `${theme.accent}18` : 'transparent', border: activeId === item.id ? `1px solid ${theme.accent}33` : '1px solid transparent', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '8px' }}>
                       <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ fontSize: '12px', fontWeight: 600, color: activeId === item.id ? '#f4c45e' : '#e8eaf2', marginBottom: '3px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.original_content}</div>
+                        <div style={{ fontSize: '12px', fontWeight: 600, color: activeId === item.id ? theme.accent : theme.text, marginBottom: '3px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                          {item.original_content}
+                        </div>
                         <div style={{ fontSize: '11px', color: item.risky_count > 0 ? '#f45e5e' : '#4ef4b0' }}>
                           {item.risky_count > 0 ? `⚠️ ${item.risky_count} risky words` : '✅ Compliant'}
                         </div>
-                        <div style={{ fontSize: '10px', color: '#404357', marginTop: '2px' }}>{formatDate(item.created_at)}</div>
+                        <div style={{ fontSize: '10px', color: theme.muted, marginTop: '2px' }}>{formatDate(item.created_at)}</div>
                       </div>
                       <button onClick={(e) => { e.stopPropagation(); confirmDelete(item.id) }}
                         style={{ background: 'rgba(244,94,94,0.08)', border: '1px solid rgba(244,94,94,0.15)', borderRadius: '4px', color: '#f45e5e', cursor: 'pointer', fontSize: '11px', padding: '3px 7px', flexShrink: 0 }}>
@@ -282,66 +231,47 @@ export default function ContentChecker() {
 
         {/* MAIN */}
         <div style={{ flex: 1, overflow: 'auto', padding: '32px 40px' }}>
-          <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: '26px', fontWeight: 800, color: '#e8eaf2', marginBottom: '6px' }}>🔍 Compliant Content Checker</h1>
-          <p style={{ color: '#7c8099', fontSize: '14px', marginBottom: '28px' }}>
-            Paste your listing content below. Edit and re-analyze as many times as needed — your session stays open until you click New Check.
-          </p>
+          <h1 style={{ fontFamily: 'Playfair Display, serif', fontSize: '26px', fontWeight: 800, color: theme.text, marginBottom: '6px' }}>🔍 Compliant Content Checker</h1>
+          <p style={{ color: theme.muted, fontSize: '14px', marginBottom: '28px' }}>Paste your listing content. Risky words will be highlighted in red with safe alternatives.</p>
 
           <div style={{ display: 'grid', gridTemplateColumns: analyzed ? '1fr 1fr' : '1fr', gap: '24px' }}>
-
-            {/* INPUT */}
             <div>
-              <div style={{ background: 'rgba(19,21,28,0.8)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '16px', padding: '24px' }}>
-
+              <div style={{ background: `${theme.surface}cc`, border: `1px solid ${theme.accent}18`, borderRadius: '16px', padding: '24px' }}>
                 <div style={{ marginBottom: '16px' }}>
-                  <label style={{ display: 'block', fontSize: '13px', color: '#7c8099', marginBottom: '6px' }}>Marketplace</label>
-                  <select value={marketplace} onChange={e => { setMarketplace(e.target.value); setAnalyzed(false) }}
-                    style={{ width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '10px 14px', color: '#e8eaf2', fontSize: '14px', outline: 'none' }}>
-                    {['US', 'UK', 'CA'].map(m => <option key={m} value={m} style={{ background: '#13151c' }}>Amazon {m}</option>)}
+                  <label style={{ display: 'block', fontSize: '13px', color: theme.muted, marginBottom: '6px' }}>Marketplace</label>
+                  <select value={marketplace} onChange={e => setMarketplace(e.target.value)}
+                    style={{ width: '100%', background: `${theme.accent}08`, border: `1px solid ${theme.accent}22`, borderRadius: '8px', padding: '10px 14px', color: theme.text, fontSize: '14px', outline: 'none' }}>
+                    {['US', 'UK', 'CA'].map(m => <option key={m} value={m} style={{ background: theme.surface }}>Amazon {m}</option>)}
                   </select>
                 </div>
-
                 <div style={{ marginBottom: '16px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-                    <label style={{ fontSize: '13px', color: '#7c8099' }}>Your Listing Content *</label>
-                    {analyzed && (
-                      <span style={{ fontSize: '11px', color: '#4ef4b0' }}>✓ Edit below and re-analyze anytime</span>
-                    )}
-                  </div>
-                  <textarea
-                    value={content}
-                    onChange={e => { setContent(e.target.value); setAnalyzed(false) }}
-                    placeholder="Paste your title, bullet points, or product description here. You can edit and re-analyze as many times as you need..."
-                    rows={12}
-                    style={{ width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '12px 14px', color: '#e8eaf2', fontSize: '14px', outline: 'none', resize: 'vertical', fontFamily: 'inherit', lineHeight: 1.7 }}
-                  />
+                  <label style={{ display: 'block', fontSize: '13px', color: theme.muted, marginBottom: '6px' }}>Your Listing Content *</label>
+                  <textarea value={content} onChange={e => setContent(e.target.value)}
+                    placeholder="Paste your title, bullet points, or product description here..."
+                    rows={10}
+                    style={{ width: '100%', background: `${theme.accent}08`, border: `1px solid ${theme.accent}22`, borderRadius: '8px', padding: '12px 14px', color: theme.text, fontSize: '14px', outline: 'none', resize: 'vertical', fontFamily: 'inherit', lineHeight: 1.7 }} />
                 </div>
-
                 <div style={{ marginBottom: '20px' }}>
-                  <label style={{ display: 'block', fontSize: '13px', color: '#7c8099', marginBottom: '6px' }}>Additional Context (Optional)</label>
-                  <textarea
-                    value={extraExplain}
-                    onChange={e => setExtraExplain(e.target.value)}
-                    placeholder="Product category, ingredients, intended use, marketplace-specific concerns..."
+                  <label style={{ display: 'block', fontSize: '13px', color: theme.muted, marginBottom: '6px' }}>Additional Context (Optional)</label>
+                  <textarea value={extraExplain} onChange={e => setExtraExplain(e.target.value)}
+                    placeholder="Tell us more about your product..."
                     rows={3}
-                    style={{ width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '12px 14px', color: '#e8eaf2', fontSize: '14px', outline: 'none', resize: 'vertical', fontFamily: 'inherit' }}
-                  />
+                    style={{ width: '100%', background: `${theme.accent}08`, border: `1px solid ${theme.accent}22`, borderRadius: '8px', padding: '12px 14px', color: theme.text, fontSize: '14px', outline: 'none', resize: 'vertical', fontFamily: 'inherit' }} />
                 </div>
-
-                <button onClick={analyzeNow} disabled={!content.trim()}
-                  style={{ width: '100%', padding: '13px', background: content.trim() ? 'linear-gradient(135deg, #f4c45e, #f4845e)' : 'rgba(255,255,255,0.05)', color: content.trim() ? 'white' : '#7c8099', border: 'none', borderRadius: '10px', fontWeight: 700, fontSize: '15px', cursor: content.trim() ? 'pointer' : 'not-allowed' }}>
-                  {analyzed ? 'Re-Analyze Content →' : 'Analyze Content →'}
-                </button>
-
-                {analyzed && (
-                  <p style={{ fontSize: '12px', color: '#404357', textAlign: 'center', marginTop: '10px' }}>
-                    Make changes above and click Re-Analyze. Click "New Check" in the sidebar only when you want to start fresh.
-                  </p>
-                )}
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <button onClick={analyzeNow} disabled={!content.trim()}
+                    style={{ flex: 1, padding: '13px', background: content.trim() ? `linear-gradient(135deg, ${theme.accent}, ${theme.accent2})` : `${theme.accent}18`, color: content.trim() ? theme.bg : theme.muted, border: 'none', borderRadius: '10px', fontWeight: 700, fontSize: '15px', cursor: content.trim() ? 'pointer' : 'not-allowed' }}>
+                    Analyze Content →
+                  </button>
+                  {analyzed && (
+                    <button onClick={reset} style={{ padding: '13px 20px', background: 'transparent', border: `1px solid ${theme.accent}33`, borderRadius: '10px', color: theme.muted, cursor: 'pointer', fontSize: '14px' }}>
+                      Reset
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
 
-            {/* RESULTS */}
             {analyzed && (
               <div>
                 <div style={{ background: riskyWords.length === 0 ? 'rgba(78,244,176,0.06)' : 'rgba(244,94,94,0.06)', border: `1px solid ${riskyWords.length === 0 ? 'rgba(78,244,176,0.2)' : 'rgba(244,94,94,0.2)'}`, borderRadius: '12px', padding: '16px 20px', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -350,39 +280,30 @@ export default function ContentChecker() {
                     <div style={{ fontFamily: 'Playfair Display, serif', fontSize: '16px', fontWeight: 700, color: riskyWords.length === 0 ? '#4ef4b0' : '#f45e5e', marginBottom: '2px' }}>
                       {riskyWords.length === 0 ? 'Content looks compliant!' : `${riskyWords.length} risky word${riskyWords.length > 1 ? 's' : ''} found`}
                     </div>
-                    <div style={{ fontSize: '12px', color: '#7c8099' }}>
-                      {riskyWords.length === 0 ? 'No risky claims detected. Your content appears compliant.' : 'Click any green alternative below to auto-replace in your content.'}
+                    <div style={{ fontSize: '12px', color: theme.muted }}>
+                      {riskyWords.length === 0 ? 'No risky claims detected.' : 'Replace highlighted words below.'}
                     </div>
                   </div>
                 </div>
 
-                {/* Highlighted preview */}
-                <div style={{ background: 'rgba(19,21,28,0.8)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '12px', padding: '20px', marginBottom: '16px', lineHeight: 1.8, fontSize: '14px', whiteSpace: 'pre-wrap', maxHeight: '200px', overflowY: 'auto' }}>
-                  <p style={{ fontSize: '11px', color: '#404357', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Content Preview</p>
+                <div style={{ background: `${theme.surface}cc`, border: `1px solid ${theme.accent}18`, borderRadius: '12px', padding: '20px', marginBottom: '16px', lineHeight: 1.8, fontSize: '14px', whiteSpace: 'pre-wrap' }}>
                   <HighlightedContent content={content} riskyWords={riskyWords} />
                 </div>
 
-                {/* Alternatives */}
                 {riskyWords.length > 0 && (
-                  <div style={{ background: 'rgba(19,21,28,0.8)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '12px', padding: '20px' }}>
-                    <h3 style={{ fontFamily: 'Playfair Display, serif', fontSize: '16px', fontWeight: 700, color: '#e8eaf2', marginBottom: '6px' }}>Safe Alternatives</h3>
-                    <p style={{ fontSize: '12px', color: '#7c8099', marginBottom: '16px' }}>Click any green alternative to automatically replace it in your content above, then click Re-Analyze.</p>
+                  <div style={{ background: `${theme.surface}cc`, border: `1px solid ${theme.accent}18`, borderRadius: '12px', padding: '20px' }}>
+                    <h3 style={{ fontFamily: 'Playfair Display, serif', fontSize: '16px', fontWeight: 700, color: theme.text, marginBottom: '16px' }}>Safe Alternatives</h3>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                       {Array.from(new Map(riskyWords.map(rw => [rw.word.toLowerCase(), rw])).values()).map((rw, i) => (
                         <div key={i} style={{ background: 'rgba(244,94,94,0.05)', border: '1px solid rgba(244,94,94,0.15)', borderRadius: '8px', padding: '12px 16px' }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
                             <span style={{ background: 'rgba(244,94,94,0.15)', color: '#f45e5e', padding: '2px 10px', borderRadius: '4px', fontSize: '13px', fontWeight: 600 }}>❌ {rw.word}</span>
-                            <span style={{ color: '#7c8099', fontSize: '12px' }}>→ replace with:</span>
+                            <span style={{ color: theme.muted, fontSize: '12px' }}>replace with:</span>
                           </div>
                           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                             {rw.alternatives.map((alt: string, j: number) => (
-                              <span key={j}
-                                style={{ background: 'rgba(78,244,176,0.08)', border: '1px solid rgba(78,244,176,0.2)', color: '#4ef4b0', padding: '4px 14px', borderRadius: '4px', fontSize: '12px', cursor: 'pointer', fontWeight: 500 }}
-                                onClick={() => {
-                                  const newContent = content.replace(new RegExp(rw.word, 'gi'), alt)
-                                  setContent(newContent)
-                                  setAnalyzed(false)
-                                }}>
+                              <span key={j} style={{ background: 'rgba(78,244,176,0.08)', border: '1px solid rgba(78,244,176,0.2)', color: '#4ef4b0', padding: '3px 12px', borderRadius: '4px', fontSize: '12px', cursor: 'pointer' }}
+                                onClick={() => { setContent(content.replace(new RegExp(rw.word, 'gi'), alt)); setAnalyzed(false); setRiskyWords([]) }}>
                                 ✓ {alt}
                               </span>
                             ))}
